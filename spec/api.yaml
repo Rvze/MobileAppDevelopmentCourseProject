@@ -336,15 +336,17 @@ components:
         - model_id
 
     NotificationsResponse:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/NotificationStatus'
-        text:
-          type: string
-      required:
-        - status
-        - text
+      type: array
+      items:
+        type: object
+        properties:
+          status:
+            $ref: '#/components/schemas/NotificationStatus'
+          text:
+            type: string
+        required:
+          - status
+          - text
 
   parameters:
     UserIdHeader:
