@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  core-stuff:
+    container_name: core-stuff
+    restart: always
+    build:
+      context: ./core-stuff
+    ports:
+      - "8081:8081"

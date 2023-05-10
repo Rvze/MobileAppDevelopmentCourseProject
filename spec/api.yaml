@@ -1,0 +1,355 @@
+openapi: "3.0.2"
+info:
+  title: API Title
+  version: "1.0"
+servers:
+  - url: http://localhost:8081
+    description: local
+paths:
+  /v1/stuff/search-by-text:
+    post:
+      description: |
+        Request to search stuff by text
+      tags:
+        - Stuff
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/StuffSearchRequest'
+      responses:
+        '200':
+          description: |
+            Request processed successfully, body contains stuff
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/StuffSearchResponse'
+
+  /v1/stuff/buy-request:
+    post:
+      description: |
+        Request to buy some stuff from supplier
+      tags:
+        - Stuff
+      parameters:
+        - $ref: '#/components/parameters/UserIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/StuffBuyRequest'
+      responses:
+        '200':
+          description: |
+            Request processed successfully, buy request was sent
+          content:
+            application/json:
+              schema: { }
+
+  /v1/supplier/stuff:
+    get:
+      description: |
+        Request to get all supplier stuff
+      tags:
+        - Supplier
+      parameters:
+        - $ref: '#/components/parameters/UserIdHeader'
+      responses:
+        '200':
+          description: |
+            Request processed successfully, body contains supplier stuff
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/SupplierStuffResponse'
+    post:
+      description: |
+        Request to update all supplier stuff
+      tags:
+        - Supplier
+      parameters:
+        - $ref: '#/components/parameters/UserIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/SupplierStuffUpdateRequest'
+      responses:
+        '200':
+          description: |
+            Request processed successfully, body contains supplier stuff
+          content:
+            application/json:
+              schema: { }
+
+  /v1/notification:
+    get:
+      description: |
+        Request to get stuff notifications
+      tags:
+        - Notification
+      parameters:
+        - $ref: '#/components/parameters/UserIdHeader'
+      responses:
+        '200':
+          description: |
+            Request processed successfully, body contains notifications
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/NotificationsResponse'
+
+  /v1/notification/stuff:
+    post:
+      description: |
+        Request to subscribe/unsubscribe to/from stuff notification
+      tags:
+        - Notification
+      parameters:
+        - $ref: '#/components/parameters/UserIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/StuffNotificationSubscriptionRequest'
+      responses:
+        '200':
+          description: |
+            Request processed successfully, subscription was issued
+          content:
+            application/json:
+              schema: { }
+
+components:
+  schemas:
+    # Common
+    Currency:
+      description: |
+        Currency identifier in accordance with the ISO 4217 standard
+      example: RUB
+      type: string
+      enum:
+        - RUB
+        - USD
+        - EUR
+
+    MoneyAmount:
+      description: |
+        Text presentation of money amount. For non-integers, a dot is used as a separator
+      example: 3999.99
+      type: string
+
+    Money:
+      description: Common structure for money presentation for prices
+      type: object
+      properties:
+        amount:
+          '$ref': '#/components/schemas/MoneyAmount'
+        currency:
+          '$ref': '#/components/schemas/Currency'
+      required:
+        - amount
+        - currency
+
+    UserId:
+      description: Unique user identifier in system
+      type: integer
+      format: int64
+      example: 275834
+
+    PropertyName:
+      type: string
+      enum:
+        - MEMORY
+        - MODEL
+        - COLOR
+        - COUNTRY
+        - RAM_MEMORY
+        - APPLE_CHIP
+
+    Property:
+      type: object
+      properties:
+        name:
+          '$ref': '#/components/schemas/PropertyName'
+        value:
+          description: Text value of property
+          example: 32 GB
+          type: string
+      required:
+        - name
+        - value
+
+    StuffType:
+      type: string
+      enum:
+        - IPHONE
+        - AIRPODS
+        - MACBOOK
+        - PS5
+
+    ModelId:
+      example: IPHONE_14_PRO_MAX/GB_256/SPACE_GRAY
+      description: Unique stuff model id
+      type: string
+
+    SupplierPrice:
+      type: object
+      properties:
+        supplier_id:
+          $ref: '#/components/schemas/UserId'
+        price:
+          '$ref': '#/components/schemas/Money'
+      required:
+        - supplier_id
+        - price
+
+    SupplierStuffDto:
+      type: object
+      properties:
+        stuff_type:
+          $ref: '#/components/schemas/StuffType'
+        model_id:
+          $ref: '#/components/schemas/ModelId'
+        title:
+          example: Iphone 14 Pro Max 256 GB Space Gray
+          description: Stuff title
+          type: string
+        property_list:
+          type: array
+          items:
+            '$ref': '#/components/schemas/Property'
+        price:
+          '$ref': '#/components/schemas/Money'
+      required:
+        - stuff_type
+        - model_id
+        - title
+        - property_list
+        - price
+
+    StuffDto:
+      type: object
+      properties:
+        stuff_type:
+          $ref: '#/components/schemas/StuffType'
+        model_id:
+          $ref: '#/components/schemas/ModelId'
+        title:
+          example: Iphone 14 Pro Max 256 GB Space Gray
+          description: Stuff title
+          type: string
+        property_list:
+          type: array
+          items:
+            '$ref': '#/components/schemas/Property'
+        supplier_prices:
+          type: array
+          items:
+            '$ref': '#/components/schemas/SupplierPrice'
+      required:
+        - stuff_type
+        - model_id
+        - title
+        - property_list
+        - supplier_prices
+
+    NotificationActionType:
+      type: string
+      enum:
+        - SUBSCRIBE
+        - UNSUBSCRIBE
+
+    NotificationStatus:
+      type: string
+      enum:
+        - NEW
+        - READ
+
+    # Stuff
+    StuffSearchRequest:
+      type: object
+      properties:
+        text:
+          example: Айфон 14 Pro Max Синий
+          type: string
+      required:
+        - text
+
+    StuffSearchResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/StuffDto'
+
+    StuffBuyRequest:
+      type: object
+      properties:
+        supplier_id:
+          $ref: '#/components/schemas/UserId'
+        stuff_type:
+          $ref: '#/components/schemas/StuffType'
+        model_id:
+          $ref: '#/components/schemas/ModelId'
+        count:
+          type: integer
+          format: int32
+          minimum: 1
+      required:
+        - supplier_id
+        - stuff_type
+        - model_id
+        - count
+
+
+    # Supplier
+    SupplierStuffResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/SupplierStuffDto'
+
+    SupplierStuffUpdateRequest:
+      type: object
+      properties:
+        text:
+          example: |
+            Iphone 14 Pro Max space black 🇺🇸
+            AirPods Pro Max BLUE  🇺🇸
+          type: string
+      required:
+        - text
+
+    # Notification
+    StuffNotificationSubscriptionRequest:
+      type: object
+      properties:
+        action_type:
+          $ref: '#/components/schemas/NotificationActionType'
+        model_id:
+          $ref: '#/components/schemas/ModelId'
+      required:
+        - action_type
+        - model_id
+
+    NotificationsResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+        text:
+          type: string
+      required:
+        - status
+        - text
+
+  parameters:
+    UserIdHeader:
+      name: UserID
+      in: header
+      schema:
+        type: string
+      required: true
