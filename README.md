@@ -364,3 +364,12 @@ access_token находится в заголовке X-Access-Token любог�
 }
 ```
 
+### Пользовательские сценарии ###
+
+![user_scenarios](https://github.com/kkkooolllyyyaaa/MobileAppDevelopmentCourseProject/assets/22819920/49164b4f-ea70-41cb-abfb-48d66a964afa)
+
+
+### Первичная модель дизайна ###
+
+Исходя из пользовательских сценариев, были разработаны и согласованы экраны приложения. Верстка была произведена в proto.io
+[Ссылка на модель](https://github.com/kkkooolllyyyaaa/MobileAppDevelopmentCourseProject/blob/main/docs/Mobile-html.zip)
