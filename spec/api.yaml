@@ -86,7 +86,7 @@ paths:
             application/json:
               schema: { }
 
-  /v1/notification:
+  /v1/notification/list:
     get:
       description: |
         Request to get stuff notifications
