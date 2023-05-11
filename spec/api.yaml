@@ -131,6 +131,12 @@ paths:
         Login request
       tags:
         - Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/LoginCredentials'
       responses:
         '200':
           description: |
@@ -138,12 +144,6 @@ paths:
           content:
             application/json:
               schema: { }
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              '$ref': '#/components/schemas/Credentials'
 
   /v1/register:
     post:
@@ -151,19 +151,19 @@ paths:
         Register request
       tags:
         - Authorization
-      responses:
-        '200':
-          description: |
-            user authorized
-          content:
-            application/json:
-              schema: { }
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              '$ref': '#/components/schemas/CredReg'
+              '$ref': '#/components/schemas/RegisterCredentials'
+      responses:
+        '200':
+          description: |
+            user registered
+          content:
+            application/json:
+              schema: { }
 
 
 
@@ -391,16 +391,19 @@ components:
           - text
 
     # Login
-    Credentials:
+    LoginCredentials:
       type: object
       properties:
         username:
           type: string
         password:
           type: string
+      required:
+        - username
+        - password
 
     #Register
-    CredReg:
+    RegisterCredentials:
       type: object
       properties:
         username:
@@ -409,6 +412,10 @@ components:
           type: string
         role:
           type: string
+      required:
+        - username
+        - password
+        - role
 
 
 
