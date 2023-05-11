@@ -125,6 +125,18 @@ paths:
             application/json:
               schema: { }
 
+  /v1/login:
+    post:
+      description: |
+        Login request
+
+  /v1/register:
+    post:
+      description: |
+        Register request
+
+    
+
 components:
   schemas:
     # Common
@@ -347,6 +359,9 @@ components:
         required:
           - status
           - text
+
+    # Login
+
 
   parameters:
     UserIdHeader:
