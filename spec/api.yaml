@@ -129,13 +129,43 @@ paths:
     post:
       description: |
         Login request
+      tags:
+        - Authorization
+      responses:
+        '200':
+          description: |
+            user authorized
+          content:
+            application/json:
+              schema: { }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/Credentials'
 
   /v1/register:
     post:
       description: |
         Register request
+      tags:
+        - Authorization
+      responses:
+        '200':
+          description: |
+            user authorized
+          content:
+            application/json:
+              schema: { }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/CredReg'
 
-    
+
 
 components:
   schemas:
@@ -361,6 +391,25 @@ components:
           - text
 
     # Login
+    Credentials:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    #Register
+    CredReg:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+
 
 
   parameters:
