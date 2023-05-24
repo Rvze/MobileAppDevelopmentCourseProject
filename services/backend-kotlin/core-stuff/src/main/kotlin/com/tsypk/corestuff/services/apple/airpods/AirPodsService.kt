@@ -15,6 +15,10 @@ class AirPodsService(
     }
 
     fun findBestPrices(request: AirPodsFindBestRequest): List<SupplierAirPods> {
+        val a=supplierAirPodsRepository.findByModelAndColor(
+            model = request.model,
+            color = request.color,
+        )
         return if (request.country == null) {
             supplierAirPodsRepository.findByModelAndColor(
                 model = request.model,

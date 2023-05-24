@@ -11,15 +11,15 @@ import com.tsypk.corestuff.exception.NotIphoneIdException
 import com.tsypk.corestuff.model.apple.SupplierAirPods
 import com.tsypk.corestuff.model.apple.SupplierIphone
 import com.tsypk.corestuff.model.apple.SupplierMacbook
-import recognitioncommons.exception.InvalidAirPodsIdException
-import recognitioncommons.exception.InvalidIphoneIdException
-import recognitioncommons.exception.NotPlayStationException
-import recognitioncommons.exception.PlaystationInvalidIdException
+import recognitioncommons.exception.*
 import recognitioncommons.models.Money
 import recognitioncommons.models.apple.airpods.AirPodsFullModel
 import recognitioncommons.models.apple.iphone.IphoneFullModel
+import recognitioncommons.models.apple.macbook.MacbookFullModel
+import recognitioncommons.models.country.Country
 import recognitioncommons.models.sony.PlayStationFullModel
 import recognitioncommons.util.extractor.airPodsFullModelFromId
+import recognitioncommons.util.extractor.macbookFullModelFromId
 import recognitioncommons.util.extractor.playStationFullModelFromId
 
 /**
@@ -45,9 +45,9 @@ fun SupplierIphone.toSupplierIphoneDto(): SupplierIphoneDto =
         ),
     )
 
-fun iphoneFullModelFromId(input: String): IphoneFullModel {
+fun iphoneFullModelFromId(input: String, country: Country): IphoneFullModel {
     try {
-        return recognitioncommons.util.extractor.iphoneFullModelFromId(input)
+        return recognitioncommons.util.extractor.iphoneFullModelFromId(input, country)
     } catch (e: InvalidIphoneIdException) {
         throw NotIphoneIdException(input)
     }
@@ -76,9 +76,9 @@ fun SupplierAirPods.toSupplierAirPodsDto(): SupplierAirPodsDto =
         ),
     )
 
-fun airPodsFullModelFromId(input: String): AirPodsFullModel {
+fun airPodsFullModelFromId(input: String, country : Country): AirPodsFullModel {
     try {
-        return airPodsFullModelFromId(input)
+        return airPodsFullModelFromId(input, country)
     } catch (e: InvalidAirPodsIdException) {
         throw NotAirPodsIdException(input)
     }
@@ -115,3 +115,11 @@ fun SupplierMacbook.toSupplierMacbookDtoMapper(): SupplierMacbookDto =
         country = this.country,
         money = Money(this.priceAmount, this.priceCurrency)
     )
+
+fun macbookFullModelFromId(input: String): MacbookFullModel {
+    try {
+        return macbookFullModelFromId(input)
+    } catch (e: InvalidMacbookIdException) {
+        throw NotMacbookException(input)
+    }
+}
