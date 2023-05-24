@@ -1,10 +1,12 @@
 package com.tsypk.corestuff.services
 
+import com.tsypk.corestuff.controller.dto.SearchByTextRequest
 import com.tsypk.corestuff.controller.dto.SearchModelsRecognitionResult
 import com.tsypk.corestuff.controller.dto.airpods.AirPodsFindBestRequest
 import com.tsypk.corestuff.controller.dto.iphone.IphonesFindBestRequest
 import com.tsypk.corestuff.controller.dto.macbook.MacbookFindBestRequest
 import com.tsypk.corestuff.controller.dto.response.Price
+import com.tsypk.corestuff.controller.dto.response.Property
 import com.tsypk.corestuff.controller.dto.response.StuffSearchResponse
 import com.tsypk.corestuff.controller.dto.response.SupplierPrice
 import com.tsypk.corestuff.exception.RecognitionException
@@ -22,6 +24,8 @@ import recognitioncommons.service.recognition.apple.airpods.AirPodsRecognitionSe
 import recognitioncommons.service.recognition.apple.iphone.IphoneRecognitionService
 import recognitioncommons.service.recognition.apple.macbook.MacbookRecognitionService
 import recognitioncommons.util.Presentation.AirPodsPresentation.toHumanReadableString
+import recognitioncommons.util.Presentation.IphonePresentation.toHumanReadableString
+import recognitioncommons.util.Presentation.MacbookPresentation.toHumanReadableString
 import recognitioncommons.util.normalization.normalizeText
 
 @Service
@@ -35,20 +39,18 @@ class StuffService(
     private val iphoneRecognitionService: IphoneRecognitionService
 ) {
     @Transactional
-    fun searchByText(text: String): List<StuffSearchResponse> {
-        val recognized = recognizeSearchModels(text)
+    fun searchByText(searchByTextRequest: SearchByTextRequest): List<StuffSearchResponse> {
+        val recognized = recognizeSearchModels(searchByTextRequest.text)
         if (recognized.allEmpty())
             throw RecognitionException(errorMsg = recognized.errorsToString())
-        val supplierAirPods: ArrayList<SupplierAirPods> = arrayListOf()
-        val supplierIphones: ArrayList<SupplierIphone> = arrayListOf()
-        val supplierMacbooks: ArrayList<SupplierMacbook> = arrayListOf()
+        val result: ArrayList<StuffSearchResponse> = arrayListOf()
         recognized.airPods.forEach {
             val airpodsSearchModel = AirPodsFindBestRequest(
                 model = it.model,
                 color = it.color,
                 country = it.country
             )
-            buildResponse(airPodsService.findBestPrices(airpodsSearchModel), null, null)
+            result.addAll(buildResponse(airPodsService.findBestPrices(airpodsSearchModel), null, null))
         }
         recognized.iphones.forEach {
             val iphoneFindBestRequest = IphonesFindBestRequest(
@@ -57,7 +59,7 @@ class StuffService(
                 memory = it.memory,
                 country = it.country
             )
-            supplierIphones.addAll(iphoneService.findBestPrices(iphoneFindBestRequest))
+            result.addAll(buildResponse(null, iphoneService.findBestPrices(iphoneFindBestRequest), null))
         }
         //TODO
         recognized.macbooks.forEach {
@@ -68,8 +70,10 @@ class StuffService(
                 color = it.color,
                 country = it.country
             )
+            result.addAll(buildResponse(null, null, macbookService.getFindPrices(macbookFindBestRequest)))
+
         }
-        return buildResponse(supplierAirPods, supplierIphones, supplierMacbooks)
+        return result
     }
 
     private fun recognizeSearchModels(text: String): SearchModelsRecognitionResult {
@@ -121,6 +125,51 @@ class StuffService(
                     visited[it.id] = stuffSearchResponse
                 } else {
                     visited[it.id]!!.supplierPrices.add(price)
+                }
+            }
+            stuffSearchResponses.addAll(visited.values)
+        }
+        if (!supplierIphones.isNullOrEmpty()) {
+            val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
+            supplierIphones.forEach {
+                val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
+                if (!visited.containsKey(it.id)) {
+                    val memoryProperty = Property("MEMORY", it.iphoneFullModel.memory.toString())
+                    val colorProperty = Property("COLOR", it.iphoneFullModel.color.toString())
+                    val stuffSearchResponse = StuffSearchResponse(
+                        modelId = it.iphoneFullModel.toString(),
+                        stuffType = "IPHONES",
+                        title = it.iphoneFullModel.model.toHumanReadableString(),
+                        properties = listOf(memoryProperty, colorProperty),
+                        supplierPrices = arrayListOf(price)
+                    )
+                    visited[it.id] = stuffSearchResponse
+                } else {
+                    visited[it.id]!!.supplierPrices.add(price)
+                }
+            }
+            stuffSearchResponses.addAll(visited.values)
+        }
+        if (!supplierMacbooks.isNullOrEmpty()) {
+            val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
+            supplierMacbooks.forEach {
+                val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
+                if (!visited.containsKey(it.macId)) {
+                    val screenPropery = Property("SCREEN", it.macbookFullModel.model.screen.toString())
+                    val memoryProperty = Property(name = "MEMORY", it.macbookFullModel.memory.toString())
+                    val cpuProperty = Property("CHIP", it.macbookFullModel.model.appleChip.toString())
+                    val ramProperty = Property("RAM", it.macbookFullModel.ram.toString())
+                    val colorProperty = Property("COLOR", it.macbookFullModel.color.toString())
+                    val stuffSearchResponse = StuffSearchResponse(
+                        modelId = it.macId,
+                        stuffType = "MACBOOKS",
+                        title = it.macbookFullModel.model.toHumanReadableString(),
+                        properties = listOf(screenPropery, memoryProperty, cpuProperty, ramProperty, colorProperty),
+                        supplierPrices = arrayListOf(price)
+                    )
+                    visited[it.macId] = stuffSearchResponse
+                } else {
+                    visited[it.macId]!!.supplierPrices.add(price)
                 }
             }
             stuffSearchResponses.addAll(visited.values)

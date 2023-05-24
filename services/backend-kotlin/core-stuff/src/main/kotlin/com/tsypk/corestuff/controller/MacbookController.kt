@@ -4,6 +4,7 @@ import com.tsypk.corestuff.controller.dto.macbook.MacbookFindBestRequest
 import com.tsypk.corestuff.controller.dto.macbook.MacbookUpdateRequest
 import com.tsypk.corestuff.controller.dto.macbook.SupplierMacbookDto
 import com.tsypk.corestuff.services.apple.macbook.MacBookService
+import com.tsypk.corestuff.util.toSupplierMacbookDtoMapper
 import com.tsypk.corestuff.util.toSupplierMacbookMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -34,7 +35,7 @@ class MacbookController(
     )
     fun v1MacbookSupplierFindBest(@RequestBody macbookFindBestRequest: MacbookFindBestRequest)
             : ResponseEntity<List<SupplierMacbookDto>> {
-        val result = macBookService.getFindPrices(request = macbookFindBestRequest)
+        val result = macBookService.getFindPrices(request = macbookFindBestRequest).map { it.toSupplierMacbookDtoMapper() }
         return ResponseEntity.ok().body(result)
     }
 
