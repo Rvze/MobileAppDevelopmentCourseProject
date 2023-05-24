@@ -1,14 +1,16 @@
 package com.tsypk.corestuff.services
 
-import com.tsypk.corestuff.controller.dto.SearchByTextRequest
+import com.tsypk.corestuff.controller.dto.stuff.request.SearchByTextRequest
 import com.tsypk.corestuff.controller.dto.SearchModelsRecognitionResult
 import com.tsypk.corestuff.controller.dto.airpods.AirPodsFindBestRequest
 import com.tsypk.corestuff.controller.dto.iphone.IphonesFindBestRequest
 import com.tsypk.corestuff.controller.dto.macbook.MacbookFindBestRequest
-import com.tsypk.corestuff.controller.dto.response.Price
-import com.tsypk.corestuff.controller.dto.response.Property
-import com.tsypk.corestuff.controller.dto.response.StuffSearchResponse
-import com.tsypk.corestuff.controller.dto.response.SupplierPrice
+import com.tsypk.corestuff.controller.dto.stuff.response.Price
+import com.tsypk.corestuff.controller.dto.stuff.response.Property
+import com.tsypk.corestuff.controller.dto.stuff.response.StuffSearchResponse
+import com.tsypk.corestuff.controller.dto.stuff.response.SupplierPrice
+import com.tsypk.corestuff.controller.dto.stuff.StuffType
+import com.tsypk.corestuff.controller.dto.stuff.request.BuyStuffRequest
 import com.tsypk.corestuff.exception.RecognitionException
 import com.tsypk.corestuff.model.apple.SupplierAirPods
 import com.tsypk.corestuff.model.apple.SupplierIphone
@@ -76,6 +78,10 @@ class StuffService(
         return result
     }
 
+    fun buyStuff(buyStuffRequest: BuyStuffRequest) {
+
+    }
+
     private fun recognizeSearchModels(text: String): SearchModelsRecognitionResult {
         val result = SearchModelsRecognitionResult()
         normalizeText(text).forEach {
@@ -117,7 +123,7 @@ class StuffService(
                 if (!visited.containsKey(it.id)) {
                     val stuffSearchResponse = StuffSearchResponse(
                         modelId = it.airPodsFullModel.toString(),
-                        stuffType = "AIRPODS",
+                        stuffType = StuffType.AIRPODS,
                         title = it.airPodsFullModel.model.toHumanReadableString(),
                         properties = listOf(),
                         supplierPrices = arrayListOf(price)
@@ -138,7 +144,7 @@ class StuffService(
                     val colorProperty = Property("COLOR", it.iphoneFullModel.color.toString())
                     val stuffSearchResponse = StuffSearchResponse(
                         modelId = it.iphoneFullModel.toString(),
-                        stuffType = "IPHONES",
+                        stuffType = StuffType.IPHONE,
                         title = it.iphoneFullModel.model.toHumanReadableString(),
                         properties = listOf(memoryProperty, colorProperty),
                         supplierPrices = arrayListOf(price)
@@ -162,7 +168,7 @@ class StuffService(
                     val colorProperty = Property("COLOR", it.macbookFullModel.color.toString())
                     val stuffSearchResponse = StuffSearchResponse(
                         modelId = it.macId,
-                        stuffType = "MACBOOKS",
+                        stuffType = StuffType.MACBOOK,
                         title = it.macbookFullModel.model.toHumanReadableString(),
                         properties = listOf(screenPropery, memoryProperty, cpuProperty, ramProperty, colorProperty),
                         supplierPrices = arrayListOf(price)
