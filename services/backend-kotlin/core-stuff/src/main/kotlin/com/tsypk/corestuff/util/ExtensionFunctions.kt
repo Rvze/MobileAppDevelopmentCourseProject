@@ -20,8 +20,11 @@ import com.tsypk.corestuff.model.apple.SupplierMacbook
 import com.tsypk.corestuff.model.stuff.UsersStuff
 import recognitioncommons.exception.*
 import recognitioncommons.models.Money
+import recognitioncommons.models.apple.airpods.AirPods
 import recognitioncommons.models.apple.airpods.AirPodsFullModel
+import recognitioncommons.models.apple.iphone.Iphone
 import recognitioncommons.models.apple.iphone.IphoneFullModel
+import recognitioncommons.models.apple.macbook.Macbook
 import recognitioncommons.models.apple.macbook.MacbookFullModel
 import recognitioncommons.models.country.Country
 import recognitioncommons.models.sony.PlayStationFullModel
@@ -31,6 +34,8 @@ import recognitioncommons.util.Presentation.MacbookPresentation.toHumanReadableS
 import recognitioncommons.util.extractor.airPodsFullModelFromId
 import recognitioncommons.util.extractor.macbookFullModelFromId
 import recognitioncommons.util.extractor.playStationFullModelFromId
+import recognitioncommons.util.idString
+import java.math.BigDecimal
 
 /**
  * Iphone
@@ -53,6 +58,14 @@ fun SupplierIphone.toSupplierIphoneDto(): SupplierIphoneDto =
             amount = this.priceAmount,
             currency = this.priceCurrency,
         ),
+    )
+
+fun Iphone.toSupplierIphone(supplierId: Long): SupplierIphone =
+    SupplierIphone(
+        id = this.idString(),
+        supplierId = supplierId,
+        country = this.country,
+        priceAmount = BigDecimal(this.price)
     )
 
 fun iphoneFullModelFromId(input: String, country: Country): IphoneFullModel {
@@ -84,6 +97,14 @@ fun SupplierAirPods.toSupplierAirPodsDto(): SupplierAirPodsDto =
             amount = this.priceAmount,
             currency = this.priceCurrency,
         ),
+    )
+
+fun AirPods.toSupplierAirpods(supplierId: Long): SupplierAirPods =
+    SupplierAirPods(
+        supplierId = supplierId,
+        id = this.idString(),
+        country = this.country,
+        priceAmount = BigDecimal(this.price),
     )
 
 fun airPodsFullModelFromId(input: String, country: Country): AirPodsFullModel {
@@ -126,6 +147,14 @@ fun SupplierMacbook.toSupplierMacbookDtoMapper(): SupplierMacbookDto =
         money = Money(this.priceAmount, this.priceCurrency)
     )
 
+fun Macbook.toSupplierMacbook(supplierId: Long): SupplierMacbook =
+    SupplierMacbook(
+        macId = this.idString(),
+        supplierId = supplierId,
+        country = this.country,
+        priceAmount = BigDecimal(this.price)
+    )
+
 fun macbookFullModelFromId(input: String): MacbookFullModel {
     try {
         return macbookFullModelFromId(input)
@@ -144,7 +173,6 @@ fun BuyStuffRequest.toUsersStuff(userId: Long): UsersStuff =
         supplierId = this.supplierId,
         count = this.count
     )
-
 
 
 fun buildResponse(
