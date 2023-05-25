@@ -6,11 +6,13 @@ import com.tsypk.corestuff.controller.dto.iphone.IphoneDto
 import com.tsypk.corestuff.controller.dto.iphone.SupplierIphoneDto
 import com.tsypk.corestuff.controller.dto.macbook.MacbookDto
 import com.tsypk.corestuff.controller.dto.macbook.SupplierMacbookDto
+import com.tsypk.corestuff.controller.dto.stuff.request.BuyStuffRequest
 import com.tsypk.corestuff.exception.NotAirPodsIdException
 import com.tsypk.corestuff.exception.NotIphoneIdException
 import com.tsypk.corestuff.model.apple.SupplierAirPods
 import com.tsypk.corestuff.model.apple.SupplierIphone
 import com.tsypk.corestuff.model.apple.SupplierMacbook
+import com.tsypk.corestuff.model.stuff.UsersStuff
 import recognitioncommons.exception.*
 import recognitioncommons.models.Money
 import recognitioncommons.models.apple.airpods.AirPodsFullModel
@@ -76,7 +78,7 @@ fun SupplierAirPods.toSupplierAirPodsDto(): SupplierAirPodsDto =
         ),
     )
 
-fun airPodsFullModelFromId(input: String, country : Country): AirPodsFullModel {
+fun airPodsFullModelFromId(input: String, country: Country): AirPodsFullModel {
     try {
         return airPodsFullModelFromId(input, country)
     } catch (e: InvalidAirPodsIdException) {
@@ -123,3 +125,14 @@ fun macbookFullModelFromId(input: String): MacbookFullModel {
         throw NotMacbookException(input)
     }
 }
+
+/**
+ * Users
+ */
+fun BuyStuffRequest.toUsersStuff(userId: Long): UsersStuff =
+    UsersStuff(
+        userId = userId,
+        stuffId = this.modelId,
+        supplierId = this.supplierId,
+        count = this.count
+    )

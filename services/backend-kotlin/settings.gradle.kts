@@ -1,2 +1,2 @@
 rootProject.name = "backend-kotlin"
-include("core-client", "core-stuff", "library-recognition")
+include("core-stuff", "library-recognition")
