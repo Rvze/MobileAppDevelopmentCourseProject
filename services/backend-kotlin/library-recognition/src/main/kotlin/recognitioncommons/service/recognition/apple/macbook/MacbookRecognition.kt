@@ -88,7 +88,7 @@ fun recognizeSerialNumber(text: String): MacbookSerialNumber? {
             return serlialNumbers[it]
         }
     }
-    throw MacbookSerialNumberNotFoundOrIncorrect(text)
+    return null
 }
 
 internal fun recognizeMacbookSearchModel(text: String): List<MacbookSearchModel> {

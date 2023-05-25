@@ -17,8 +17,8 @@ class MacBookService(
         macBookRepository.batchUpdateMacbooks(supplierId, macbooks)
     }
 
-    fun getFindPrices(request: MacbookFindBestRequest): List<SupplierMacbookDto> {
-        return macBookRepository.getAllLike(request).map { it.toSupplierMacbookDtoMapper() }
+    fun getFindPrices(request: MacbookFindBestRequest): List<SupplierMacbook> {
+        return macBookRepository.getAllLike(request)
     }
 
     @Deprecated("Use for only scheduled db update")

@@ -45,4 +45,14 @@ class AnyMatchSearchPart(
         }
         throw SearchException(searchParts.toString(), input)
     }
+
+    fun containsAndReturn(input: String): SearchPart? {
+        searchParts.forEach {
+            if (it.contains(input)) {
+                return it
+            }
+        }
+
+        return null
+    }
 }

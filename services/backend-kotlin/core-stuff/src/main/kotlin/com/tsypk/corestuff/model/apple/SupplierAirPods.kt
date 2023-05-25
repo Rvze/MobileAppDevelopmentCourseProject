@@ -11,8 +11,8 @@ import java.time.Instant
 data class SupplierAirPods(
     val id: String,
     val supplierId: Long,
-    val airPodsFullModel: AirPodsFullModel = airPodsFullModelFromId(id),
     val country: Country,
+    val airPodsFullModel: AirPodsFullModel = airPodsFullModelFromId(id, country),
     val priceAmount: BigDecimal,
     val priceCurrency: String = "RUB",
 ) {

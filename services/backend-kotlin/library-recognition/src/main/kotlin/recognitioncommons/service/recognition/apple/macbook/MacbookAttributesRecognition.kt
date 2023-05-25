@@ -23,7 +23,7 @@ private val RAMS_SEARCH_PART = AnyMatchSearchPart(
 )
 
 fun recognizeRam(input: String): Pair<MacbookRam, String> {
-    for (memory in POSSIBLE_RAMS) {
+    for (memory in POSSIBLE_RAMS.reversed()) {
         val toFind = memory.gbValue.toString()
         if (input.findLast { input.contains(toFind) } != null) {
             return memory to input.replace(toFind, " ")
@@ -40,24 +40,30 @@ private val POSSIBLE_MEMORIES = MacbookMemory.values().toList()
 private val TB_MEMORY_SEARCH_PART = AnyMatchSearchPart(
     searchParts = setOf(
         RegexSearchPart(Regex(pattern = "(1) *(TB|ТБ|Т|T)", option = RegexOption.IGNORE_CASE)),
+        RegexSearchPart(Regex(pattern = "(2) *(TB|ТБ|Т|T)", option = RegexOption.IGNORE_CASE)),
+        RegexSearchPart(Regex(pattern = "(4) *(TB|ТБ|Т|T)", option = RegexOption.IGNORE_CASE)),
+        RegexSearchPart(Regex(pattern = "(8) *(TB|ТБ|Т|T)", option = RegexOption.IGNORE_CASE)),
         RegexSearchPart(Regex(pattern = "(1024|2048|4096|8192)", option = RegexOption.IGNORE_CASE)),
     )
 )
 
 fun recognizeMemory(input: String): Pair<MacbookMemory, String> {
+    val gbStr = TB_MEMORY_SEARCH_PART.containsAndReturn(input)
     for (memory in POSSIBLE_MEMORIES) {
         if (memory in tbSet) {
             try {
-                val cut = TB_MEMORY_SEARCH_PART.findAndCut(input)
-                return memory to cut
+                if (gbStr != null && gbStr.contains(memory.toString())) {
+                    val cut = TB_MEMORY_SEARCH_PART.findAndCut(input)
+                    return memory to cut
+                }
             } catch (e: SearchException) {
                 continue
             }
-        }
-
-        val toFind = memory.presentValue.toString()
-        if (input.findLast { input.contains(toFind) } != null) {
-            return memory to input.replace(toFind, " ")
+        } else {
+            val toFind = memory.presentValue.toString()
+            if (input.findLast { input.contains(toFind) } != null) {
+                return memory to input.replace(toFind, " ")
+            }
         }
     }
 

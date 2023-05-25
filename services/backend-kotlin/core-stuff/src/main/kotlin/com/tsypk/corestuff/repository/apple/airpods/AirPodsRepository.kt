@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository
 import recognitioncommons.models.apple.AppleColor
 import recognitioncommons.models.apple.airpods.AirPodsFullModel
 import recognitioncommons.models.apple.airpods.AirPodsModel
+import recognitioncommons.models.country.Country
 
 @Repository
 class AirPodsRepository(
@@ -25,6 +26,7 @@ class AirPodsRepository(
             AirPodsFullModel(
                 model = AirPodsModel.valueOf(rs.getString("model")),
                 color = AppleColor.valueOf(rs.getString("color")),
+                country = Country.valueOf(rs.getString("country"))
             )
         }
     }
