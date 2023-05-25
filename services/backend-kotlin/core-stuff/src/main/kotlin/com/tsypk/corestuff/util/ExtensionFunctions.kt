@@ -6,7 +6,12 @@ import com.tsypk.corestuff.controller.dto.iphone.IphoneDto
 import com.tsypk.corestuff.controller.dto.iphone.SupplierIphoneDto
 import com.tsypk.corestuff.controller.dto.macbook.MacbookDto
 import com.tsypk.corestuff.controller.dto.macbook.SupplierMacbookDto
+import com.tsypk.corestuff.controller.dto.stuff.StuffType
 import com.tsypk.corestuff.controller.dto.stuff.request.BuyStuffRequest
+import com.tsypk.corestuff.controller.dto.stuff.response.Price
+import com.tsypk.corestuff.controller.dto.stuff.response.Property
+import com.tsypk.corestuff.controller.dto.stuff.response.StuffSearchResponse
+import com.tsypk.corestuff.controller.dto.stuff.response.SupplierPrice
 import com.tsypk.corestuff.exception.NotAirPodsIdException
 import com.tsypk.corestuff.exception.NotIphoneIdException
 import com.tsypk.corestuff.model.apple.SupplierAirPods
@@ -20,6 +25,9 @@ import recognitioncommons.models.apple.iphone.IphoneFullModel
 import recognitioncommons.models.apple.macbook.MacbookFullModel
 import recognitioncommons.models.country.Country
 import recognitioncommons.models.sony.PlayStationFullModel
+import recognitioncommons.util.Presentation.AirPodsPresentation.toHumanReadableString
+import recognitioncommons.util.Presentation.IphonePresentation.toHumanReadableString
+import recognitioncommons.util.Presentation.MacbookPresentation.toHumanReadableString
 import recognitioncommons.util.extractor.airPodsFullModelFromId
 import recognitioncommons.util.extractor.macbookFullModelFromId
 import recognitioncommons.util.extractor.playStationFullModelFromId
@@ -136,3 +144,78 @@ fun BuyStuffRequest.toUsersStuff(userId: Long): UsersStuff =
         supplierId = this.supplierId,
         count = this.count
     )
+
+
+
+fun buildResponse(
+    supplierAirPods: List<SupplierAirPods>?,
+    supplierIphones: List<SupplierIphone>?,
+    supplierMacbooks: List<SupplierMacbook>?
+): List<StuffSearchResponse> {
+    val stuffSearchResponses: ArrayList<StuffSearchResponse> = arrayListOf()
+    if (!supplierAirPods.isNullOrEmpty()) {
+        val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
+        supplierAirPods.forEach {
+            val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
+            if (!visited.containsKey(it.id)) {
+                val stuffSearchResponse = StuffSearchResponse(
+                    modelId = it.airPodsFullModel.toString(),
+                    stuffType = StuffType.AIRPODS,
+                    title = it.airPodsFullModel.model.toHumanReadableString(),
+                    properties = listOf(),
+                    supplierPrices = arrayListOf(price)
+                )
+                visited[it.id] = stuffSearchResponse
+            } else {
+                visited[it.id]!!.supplierPrices.add(price)
+            }
+        }
+        stuffSearchResponses.addAll(visited.values)
+    }
+    if (!supplierIphones.isNullOrEmpty()) {
+        val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
+        supplierIphones.forEach {
+            val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
+            if (!visited.containsKey(it.id)) {
+                val memoryProperty = Property("MEMORY", it.iphoneFullModel.memory.toString())
+                val colorProperty = Property("COLOR", it.iphoneFullModel.color.toString())
+                val stuffSearchResponse = StuffSearchResponse(
+                    modelId = it.iphoneFullModel.toString(),
+                    stuffType = StuffType.IPHONE,
+                    title = it.iphoneFullModel.model.toHumanReadableString(),
+                    properties = listOf(memoryProperty, colorProperty),
+                    supplierPrices = arrayListOf(price)
+                )
+                visited[it.id] = stuffSearchResponse
+            } else {
+                visited[it.id]!!.supplierPrices.add(price)
+            }
+        }
+        stuffSearchResponses.addAll(visited.values)
+    }
+    if (!supplierMacbooks.isNullOrEmpty()) {
+        val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
+        supplierMacbooks.forEach {
+            val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
+            if (!visited.containsKey(it.macId)) {
+                val screenPropery = Property("SCREEN", it.macbookFullModel.model.screen.toString())
+                val memoryProperty = Property(name = "MEMORY", it.macbookFullModel.memory.toString())
+                val cpuProperty = Property("CHIP", it.macbookFullModel.model.appleChip.toString())
+                val ramProperty = Property("RAM", it.macbookFullModel.ram.toString())
+                val colorProperty = Property("COLOR", it.macbookFullModel.color.toString())
+                val stuffSearchResponse = StuffSearchResponse(
+                    modelId = it.macId,
+                    stuffType = StuffType.MACBOOK,
+                    title = it.macbookFullModel.model.toHumanReadableString(),
+                    properties = listOf(screenPropery, memoryProperty, cpuProperty, ramProperty, colorProperty),
+                    supplierPrices = arrayListOf(price)
+                )
+                visited[it.macId] = stuffSearchResponse
+            } else {
+                visited[it.macId]!!.supplierPrices.add(price)
+            }
+        }
+        stuffSearchResponses.addAll(visited.values)
+    }
+    return stuffSearchResponses
+}

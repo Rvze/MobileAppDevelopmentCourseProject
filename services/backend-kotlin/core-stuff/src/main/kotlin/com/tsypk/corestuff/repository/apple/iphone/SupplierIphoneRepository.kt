@@ -123,6 +123,17 @@ class SupplierIphoneRepository(
         )
     }
 
+    fun getAllBySupplierId(supplierId: Long): List<SupplierIphone> {
+        return namedJdbcTemplate.query(
+            """
+                select * from supplier_iphone
+                    where supplier_id=:supplierId;
+            """.trimIndent(),
+            mapOf("supplierId" to supplierId),
+            ROW_MAPPER
+        )
+    }
+
     @Transactional
     @Deprecated("Use for only scheduled db update")
     fun truncateTable() {
