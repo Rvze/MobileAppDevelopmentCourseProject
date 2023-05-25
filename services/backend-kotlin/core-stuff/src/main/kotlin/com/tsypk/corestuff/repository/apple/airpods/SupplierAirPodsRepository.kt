@@ -109,6 +109,17 @@ class SupplierAirPodsRepository(
         )
     }
 
+    fun getAllBySupplierId(supplierId: Long): List<SupplierAirPods> {
+        return namedJdbcTemplate.query(
+            """
+                select * from supplier_airpods
+                    where supplier_id=:supplierId
+            """.trimIndent(),
+            mapOf("supplierId" to supplierId),
+            ROW_MAPPER
+        )
+    }
+
     private companion object {
         private val ROW_MAPPER = RowMapper { rs, _ ->
             SupplierAirPods(

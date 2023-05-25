@@ -81,6 +81,17 @@ class SupplierMacBookRepository(
         )
     }
 
+    fun getAllBySupplierId(supplierId: Long): List<SupplierMacbook> {
+        return namedJdbcTemplate.query(
+            """
+                select * from supplier_macbook
+                    where supplier_id = :supplierId
+            """.trimIndent(),
+            mapOf("supplierId" to supplierId),
+            ROW_MAPPER
+        )
+    }
+
     private fun getTemplate(
         model: MacbookModel?,
         macbookRam: MacbookRam?,

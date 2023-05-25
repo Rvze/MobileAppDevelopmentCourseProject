@@ -19,6 +19,7 @@ import com.tsypk.corestuff.repository.UserRepository
 import com.tsypk.corestuff.services.apple.airpods.AirPodsService
 import com.tsypk.corestuff.services.apple.iphone.IphoneService
 import com.tsypk.corestuff.services.apple.macbook.MacBookService
+import com.tsypk.corestuff.util.buildResponse
 import com.tsypk.corestuff.util.toUsersStuff
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -114,76 +115,4 @@ class StuffService(
         )
     }
 
-    private fun buildResponse(
-        supplierAirPods: List<SupplierAirPods>?,
-        supplierIphones: List<SupplierIphone>?,
-        supplierMacbooks: List<SupplierMacbook>?
-    ): List<StuffSearchResponse> {
-        val stuffSearchResponses: ArrayList<StuffSearchResponse> = arrayListOf()
-        if (!supplierAirPods.isNullOrEmpty()) {
-            val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
-            supplierAirPods.forEach {
-                val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
-                if (!visited.containsKey(it.id)) {
-                    val stuffSearchResponse = StuffSearchResponse(
-                        modelId = it.airPodsFullModel.toString(),
-                        stuffType = StuffType.AIRPODS,
-                        title = it.airPodsFullModel.model.toHumanReadableString(),
-                        properties = listOf(),
-                        supplierPrices = arrayListOf(price)
-                    )
-                    visited[it.id] = stuffSearchResponse
-                } else {
-                    visited[it.id]!!.supplierPrices.add(price)
-                }
-            }
-            stuffSearchResponses.addAll(visited.values)
-        }
-        if (!supplierIphones.isNullOrEmpty()) {
-            val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
-            supplierIphones.forEach {
-                val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
-                if (!visited.containsKey(it.id)) {
-                    val memoryProperty = Property("MEMORY", it.iphoneFullModel.memory.toString())
-                    val colorProperty = Property("COLOR", it.iphoneFullModel.color.toString())
-                    val stuffSearchResponse = StuffSearchResponse(
-                        modelId = it.iphoneFullModel.toString(),
-                        stuffType = StuffType.IPHONE,
-                        title = it.iphoneFullModel.model.toHumanReadableString(),
-                        properties = listOf(memoryProperty, colorProperty),
-                        supplierPrices = arrayListOf(price)
-                    )
-                    visited[it.id] = stuffSearchResponse
-                } else {
-                    visited[it.id]!!.supplierPrices.add(price)
-                }
-            }
-            stuffSearchResponses.addAll(visited.values)
-        }
-        if (!supplierMacbooks.isNullOrEmpty()) {
-            val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
-            supplierMacbooks.forEach {
-                val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
-                if (!visited.containsKey(it.macId)) {
-                    val screenPropery = Property("SCREEN", it.macbookFullModel.model.screen.toString())
-                    val memoryProperty = Property(name = "MEMORY", it.macbookFullModel.memory.toString())
-                    val cpuProperty = Property("CHIP", it.macbookFullModel.model.appleChip.toString())
-                    val ramProperty = Property("RAM", it.macbookFullModel.ram.toString())
-                    val colorProperty = Property("COLOR", it.macbookFullModel.color.toString())
-                    val stuffSearchResponse = StuffSearchResponse(
-                        modelId = it.macId,
-                        stuffType = StuffType.MACBOOK,
-                        title = it.macbookFullModel.model.toHumanReadableString(),
-                        properties = listOf(screenPropery, memoryProperty, cpuProperty, ramProperty, colorProperty),
-                        supplierPrices = arrayListOf(price)
-                    )
-                    visited[it.macId] = stuffSearchResponse
-                } else {
-                    visited[it.macId]!!.supplierPrices.add(price)
-                }
-            }
-            stuffSearchResponses.addAll(visited.values)
-        }
-        return stuffSearchResponses
-    }
 }
