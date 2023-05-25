@@ -15,9 +15,11 @@ import com.tsypk.corestuff.exception.RecognitionException
 import com.tsypk.corestuff.model.apple.SupplierAirPods
 import com.tsypk.corestuff.model.apple.SupplierIphone
 import com.tsypk.corestuff.model.apple.SupplierMacbook
+import com.tsypk.corestuff.repository.UserRepository
 import com.tsypk.corestuff.services.apple.airpods.AirPodsService
 import com.tsypk.corestuff.services.apple.iphone.IphoneService
 import com.tsypk.corestuff.services.apple.macbook.MacBookService
+import com.tsypk.corestuff.util.toUsersStuff
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import recognitioncommons.exception.StaffRecognitionException
@@ -38,7 +40,9 @@ class StuffService(
 
     private val airPodsRecognitionService: AirPodsRecognitionService,
     private val macbookRecognitionService: MacbookRecognitionService,
-    private val iphoneRecognitionService: IphoneRecognitionService
+    private val iphoneRecognitionService: IphoneRecognitionService,
+
+    private val userRepository: UserRepository
 ) {
     @Transactional
     fun searchByText(searchByTextRequest: SearchByTextRequest): List<StuffSearchResponse> {
@@ -78,8 +82,8 @@ class StuffService(
         return result
     }
 
-    fun buyStuff(buyStuffRequest: BuyStuffRequest) {
-
+    fun buyStuff(buyStuffRequest: BuyStuffRequest, userId: Long) {
+        userRepository.saveUserStuff(buyStuffRequest.toUsersStuff(userId))
     }
 
     private fun recognizeSearchModels(text: String): SearchModelsRecognitionResult {
