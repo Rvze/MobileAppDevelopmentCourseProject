@@ -1,7 +1,7 @@
 package com.tsypk.corestuff.controller
 
 import com.tsypk.corestuff.controller.dto.stuff.request.BuyStuffRequest
-import com.tsypk.corestuff.controller.dto.stuff.request.SearchByTextRequest
+import com.tsypk.corestuff.controller.dto.stuff.request.TextRequest
 import com.tsypk.corestuff.controller.dto.stuff.response.StuffSearchResponse
 import com.tsypk.corestuff.services.StuffService
 import org.springframework.http.ResponseEntity
@@ -18,7 +18,7 @@ class StuffController(
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    fun searchByText(@RequestBody request: SearchByTextRequest): ResponseEntity<List<StuffSearchResponse>> {
+    fun searchByText(@RequestBody request: TextRequest): ResponseEntity<List<StuffSearchResponse>> {
         val response = stuffService.searchByText(request)
         return ResponseEntity.ok(response)
     }
