@@ -33,15 +33,9 @@ class SupplierService(
         val recognized = recognitionService.recognize(textRequest.text)
         if (recognized.allEmpty())
             throw RecognitionException(errorMsg = recognized.errors.toString())
-        if (recognized.airPods.isNotEmpty()) {
-            airPodsService.updateAllForSupplier(supplierId, recognized.airPods.map { it.toSupplierAirpods(supplierId) })
-        }
-        if (recognized.iphones.isNotEmpty()) {
-            iphoneService.updateAllForSupplier(supplierId, recognized.iphones.map { it.toSupplierIphone(supplierId) })
-        }
-        if (recognized.macbooks.isNotEmpty()) {
-            macbookService.updateAllForSupplier(supplierId, recognized.macbooks.map { it.toSupplierMacbook(supplierId) })
-        }
+        airPodsService.updateAllForSupplier(supplierId, recognized.airPods.map { it.toSupplierAirpods(supplierId) })
+        iphoneService.updateAllForSupplier(supplierId, recognized.iphones.map { it.toSupplierIphone(supplierId) })
+        macbookService.updateAllForSupplier(supplierId, recognized.macbooks.map { it.toSupplierMacbook(supplierId) })
     }
 
 }
