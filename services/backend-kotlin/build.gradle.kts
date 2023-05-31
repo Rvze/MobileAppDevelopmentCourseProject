@@ -33,19 +33,38 @@ subprojects {
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+        /**
+         * Spring
+         */
         implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("org.springframework.boot:spring-boot-starter-jdbc")
+        implementation("org.springframework.boot:spring-boot-starter-data-redis")
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.boot:spring-boot-test")
         implementation("org.springframework.retry:spring-retry")
         implementation("org.springframework.boot:spring-boot-starter-aop")
         implementation("org.springframework:spring-test")
 
+        /**
+         * Utils
+         */
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("com.google.code.gson:gson:2.9.0")
 
+        /**
+         * Database
+         */
         runtimeOnly("org.postgresql:postgresql")
+        implementation("redis.clients:jedis:4.3.2")
+
+        /**
+         * Test containers
+         */
+        implementation(platform("org.testcontainers:testcontainers-bom:1.17.6"))
+        testImplementation("org.testcontainers:junit-jupiter")
+        testImplementation("org.testcontainers:postgresql")
+        testImplementation("com.redis.testcontainers:testcontainers-redis-junit-jupiter:1.4.6")
 
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 

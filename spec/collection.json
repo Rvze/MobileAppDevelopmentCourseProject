@@ -1,0 +1,886 @@
+{
+    "item": [
+        {
+            "name": "Stuff",
+            "description": "",
+            "item": [
+                {
+                    "id": "a0d5a2e0-15a8-4652-9b8d-1884d7a994bf",
+                    "name": "Request to search stuff by text\n",
+                    "request": {
+                        "name": "Request to search stuff by text\n",
+                        "description": {
+                            "content": "Request to search stuff by text\n",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "v1",
+                                "stuff",
+                                "search-by-text"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"text\": \"Айфон 14 Pro Max Синий\"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "b04152c1-50ac-4fcb-b9f1-c8d0c46f6f5a",
+                            "name": "Request processed successfully, body contains stuff\n",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "stuff",
+                                        "search-by-text"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"text\": \"Айфон 14 Pro Max Синий\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "[\n  {\n    \"stuff_type\": \"MACBOOK\",\n    \"model_id\": \"IPHONE_14_PRO_MAX/GB_256/SPACE_GRAY\",\n    \"title\": \"Iphone 14 Pro Max 256 GB Space Gray\",\n    \"property_list\": [\n      {\n        \"name\": \"COUNTRY\",\n        \"value\": \"32 GB\"\n      },\n      {\n        \"name\": \"COLOR\",\n        \"value\": \"32 GB\"\n      }\n    ],\n    \"supplier_prices\": [\n      {\n        \"supplier_id\": 275834,\n        \"price\": {\n          \"amount\": \"enim nostrud\",\n          \"currency\": \"RUB\"\n        }\n      },\n      {\n        \"supplier_id\": 275834,\n        \"price\": {\n          \"amount\": \"id proident mollit in\",\n          \"currency\": \"RUB\"\n        }\n      }\n    ]\n  },\n  {\n    \"stuff_type\": \"MACBOOK\",\n    \"model_id\": \"IPHONE_14_PRO_MAX/GB_256/SPACE_GRAY\",\n    \"title\": \"Iphone 14 Pro Max 256 GB Space Gray\",\n    \"property_list\": [\n      {\n        \"name\": \"APPLE_CHIP\",\n        \"value\": \"32 GB\"\n      },\n      {\n        \"name\": \"COLOR\",\n        \"value\": \"32 GB\"\n      }\n    ],\n    \"supplier_prices\": [\n      {\n        \"supplier_id\": 275834,\n        \"price\": {\n          \"amount\": \"laborum id elit\",\n          \"currency\": \"RUB\"\n        }\n      },\n      {\n        \"supplier_id\": 275834,\n        \"price\": {\n          \"amount\": \"mollit magna\",\n          \"currency\": \"RUB\"\n        }\n      }\n    ]\n  }\n]",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "815f9cc7-4391-4e4f-804c-b7125cd47927",
+                    "name": "Request to buy some stuff from supplier\n",
+                    "request": {
+                        "name": "Request to buy some stuff from supplier\n",
+                        "description": {
+                            "content": "Request to buy some stuff from supplier\n",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "v1",
+                                "stuff",
+                                "buy-request"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "disabled": false,
+                                "description": {
+                                    "content": "(Required) ",
+                                    "type": "text/plain"
+                                },
+                                "key": "UserID",
+                                "value": "esse id"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"supplier_id\": 275834,\n  \"stuff_type\": \"MACBOOK\",\n  \"model_id\": \"IPHONE_14_PRO_MAX/GB_256/SPACE_GRAY\",\n  \"count\": 37378798\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "c15e1a2f-411f-4fd0-94cb-1ce580d9657d",
+                            "name": "Request processed successfully, buy request was sent\n",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "stuff",
+                                        "buy-request"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "disabled": false,
+                                        "description": {
+                                            "content": "(Required) ",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "UserID",
+                                        "value": "esse id"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"supplier_id\": 275834,\n  \"stuff_type\": \"MACBOOK\",\n  \"model_id\": \"IPHONE_14_PRO_MAX/GB_256/SPACE_GRAY\",\n  \"count\": 37378798\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Supplier",
+            "description": "",
+            "item": [
+                {
+                    "id": "b1af4283-56fa-4a13-9890-13e9076f74c5",
+                    "name": "Request to get all supplier stuff\n",
+                    "request": {
+                        "name": "Request to get all supplier stuff\n",
+                        "description": {
+                            "content": "Request to get all supplier stuff\n",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "v1",
+                                "supplier",
+                                "stuff"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "disabled": false,
+                                "description": {
+                                    "content": "(Required) ",
+                                    "type": "text/plain"
+                                },
+                                "key": "UserID",
+                                "value": "esse id"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "GET",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "682a9956-711b-42f8-b234-41bd638270e6",
+                            "name": "Request processed successfully, body contains supplier stuff\n",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "supplier",
+                                        "stuff"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "disabled": false,
+                                        "description": {
+                                            "content": "(Required) ",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "UserID",
+                                        "value": "esse id"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "[\n  {\n    \"stuff_type\": \"PS5\",\n    \"model_id\": \"IPHONE_14_PRO_MAX/GB_256/SPACE_GRAY\",\n    \"title\": \"Iphone 14 Pro Max 256 GB Space Gray\",\n    \"property_list\": [\n      {\n        \"name\": \"COLOR\",\n        \"value\": \"32 GB\"\n      },\n      {\n        \"name\": \"COLOR\",\n        \"value\": \"32 GB\"\n      }\n    ],\n    \"price\": {\n      \"amount\": \"e\",\n      \"currency\": \"RUB\"\n    }\n  },\n  {\n    \"stuff_type\": \"MACBOOK\",\n    \"model_id\": \"IPHONE_14_PRO_MAX/GB_256/SPACE_GRAY\",\n    \"title\": \"Iphone 14 Pro Max 256 GB Space Gray\",\n    \"property_list\": [\n      {\n        \"name\": \"COLOR\",\n        \"value\": \"32 GB\"\n      },\n      {\n        \"name\": \"MODEL\",\n        \"value\": \"32 GB\"\n      }\n    ],\n    \"price\": {\n      \"amount\": \"enim eu occaecat dolor\",\n      \"currency\": \"RUB\"\n    }\n  }\n]",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "3428a726-6769-4a37-a9b4-947b6b5aafd3",
+                    "name": "Request to update all supplier stuff\n",
+                    "request": {
+                        "name": "Request to update all supplier stuff\n",
+                        "description": {
+                            "content": "Request to update all supplier stuff\n",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "v1",
+                                "supplier",
+                                "stuff"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "disabled": false,
+                                "description": {
+                                    "content": "(Required) ",
+                                    "type": "text/plain"
+                                },
+                                "key": "UserID",
+                                "value": "esse id"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"text\": \"Iphone 14 Pro Max space black 🇺🇸\\nAirPods Pro Max BLUE  🇺🇸\\n\"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "8dfed840-af0e-4d8d-b478-4d3e504908c9",
+                            "name": "Request processed successfully, body contains supplier stuff\n",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "supplier",
+                                        "stuff"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "disabled": false,
+                                        "description": {
+                                            "content": "(Required) ",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "UserID",
+                                        "value": "esse id"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"text\": \"Iphone 14 Pro Max space black 🇺🇸\\nAirPods Pro Max BLUE  🇺🇸\\n\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Notification",
+            "description": "",
+            "item": [
+                {
+                    "id": "9886ea19-80d8-4aa5-a261-290d22b820cf",
+                    "name": "Request to get stuff notifications\n",
+                    "request": {
+                        "name": "Request to get stuff notifications\n",
+                        "description": {
+                            "content": "Request to get stuff notifications\n",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "v1",
+                                "notification",
+                                "list"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "disabled": false,
+                                "description": {
+                                    "content": "(Required) ",
+                                    "type": "text/plain"
+                                },
+                                "key": "UserID",
+                                "value": "esse id"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "GET",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "620e040d-a918-478d-9c5a-d068f4e66dcb",
+                            "name": "Request processed successfully, body contains notifications\n",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "notification",
+                                        "list"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "disabled": false,
+                                        "description": {
+                                            "content": "(Required) ",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "UserID",
+                                        "value": "esse id"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "[\n  {\n    \"status\": \"NEW\",\n    \"text\": \"labore exercitation Lorem c\"\n  },\n  {\n    \"status\": \"READ\",\n    \"text\": \"incididunt aute dolor nostrud\"\n  }\n]",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "9af1b99d-9848-4e83-b7dc-34b07a8af4a4",
+                    "name": "Request to subscribe/unsubscribe to/from stuff notification\n",
+                    "request": {
+                        "name": "Request to subscribe/unsubscribe to/from stuff notification\n",
+                        "description": {
+                            "content": "Request to subscribe/unsubscribe to/from stuff notification\n",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "v1",
+                                "notification",
+                                "stuff"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "disabled": false,
+                                "description": {
+                                    "content": "(Required) ",
+                                    "type": "text/plain"
+                                },
+                                "key": "UserID",
+                                "value": "esse id"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"action_type\": \"SUBSCRIBE\",\n  \"model_id\": \"IPHONE_14_PRO_MAX/GB_256/SPACE_GRAY\"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "d1026008-4439-4ce6-aa8a-eff70982ee25",
+                            "name": "Request processed successfully, subscription was issued\n",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "notification",
+                                        "stuff"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "disabled": false,
+                                        "description": {
+                                            "content": "(Required) ",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "UserID",
+                                        "value": "esse id"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"action_type\": \"SUBSCRIBE\",\n  \"model_id\": \"IPHONE_14_PRO_MAX/GB_256/SPACE_GRAY\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Authorization",
+            "description": "",
+            "item": [
+                {
+                    "id": "9fc89954-21a3-43ab-876f-c2dae7e9bebe",
+                    "name": "Login request\n",
+                    "request": {
+                        "name": "Login request\n",
+                        "description": {
+                            "content": "Login request\n",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "v1",
+                                "login"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"username\": \"laborum esse cillum\",\n  \"password\": \"deserunt ea\"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "a8aa096b-ac2d-43a1-810f-699e125b32b4",
+                            "name": "user authorized\n",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "login"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"username\": \"laborum esse cillum\",\n  \"password\": \"deserunt ea\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "b7065990-bff4-4f6d-8b15-d363c84ac97c",
+                    "name": "Register request\n",
+                    "request": {
+                        "name": "Register request\n",
+                        "description": {
+                            "content": "Register request\n",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "v1",
+                                "register"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"username\": \"in cupidatat labore laborum dolor\",\n  \"password\": \"dolor anim in nisi\",\n  \"role\": \"ex Excepteur \"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "10b3c721-ca01-4821-876e-712606a43524",
+                            "name": "user registered\n",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "register"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"username\": \"in cupidatat labore laborum dolor\",\n  \"password\": \"dolor anim in nisi\",\n  \"role\": \"ex Excepteur \"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        }
+    ],
+    "event": [],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:8081"
+        }
+    ],
+    "info": {
+        "_postman_id": "7ebf22d2-ef26-4555-8132-563e4f4b4796",
+        "name": "API Title",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": {
+            "content": "",
+            "type": "text/plain"
+        }
+    }
+}
