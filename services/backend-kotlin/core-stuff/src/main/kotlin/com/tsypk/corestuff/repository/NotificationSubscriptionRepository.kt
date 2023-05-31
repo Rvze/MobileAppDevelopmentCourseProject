@@ -15,7 +15,7 @@ class NotificationSubscriptionRepository(
         jdbcTemplate.update(
             """
                 INSERT INTO notification_subscription(user_id, entity_id, type)
-                    VALUES (:user_id, :entity_id, :type)
+                    VALUES (:user_id, :entity_id, :type) ON CONFLICT DO NOTHING;
             """.trimIndent(),
             mapOf(
                 "user_id" to notificationSubscription.userId,

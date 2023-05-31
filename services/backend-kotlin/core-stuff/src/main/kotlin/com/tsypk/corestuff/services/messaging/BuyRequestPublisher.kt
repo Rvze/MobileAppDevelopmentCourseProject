@@ -23,7 +23,6 @@ class BuyRequestPublisher(
         publish(
             BuyStuffRequest(
                 supplierId = 0L,
-                stuffType = StuffType.IPHONE,
                 modelId = "IPHONE_14_PRO_MAX/GB_512/SPACE_BLACK",
                 count = 3,
             )

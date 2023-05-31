@@ -333,8 +333,6 @@ components:
       properties:
         supplier_id:
           $ref: '#/components/schemas/UserId'
-        stuff_type:
-          $ref: '#/components/schemas/StuffType'
         model_id:
           $ref: '#/components/schemas/ModelId'
         count:
@@ -343,7 +341,6 @@ components:
           minimum: 1
       required:
         - supplier_id
-        - stuff_type
         - model_id
         - count
 
