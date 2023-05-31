@@ -25,9 +25,6 @@ open class NotMacbookException(input: String) :
 open class NotAirPodsException(input: String) :
     StaffRecognitionException(input)
 
-open class NotPlayStationException(input: String) :
-    StaffRecognitionException(input)
-
 /**
  * Iphone
  */
@@ -99,9 +96,3 @@ class MacbookSerialNumberNotFoundOrIncorrect(input: String) :
 
 class InvalidMacbookIdException(id: String) :
     NotMacbookException("Invalid macbook id: $id")
-
-/**
- * Playstation
- */
-class PlaystationInvalidIdException(input: String) :
-    NotPlayStationException("There is no Playstation model in input=$input")

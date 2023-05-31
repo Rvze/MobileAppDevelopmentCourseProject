@@ -14,7 +14,6 @@ import recognitioncommons.models.apple.macbook.Macbook
 import recognitioncommons.models.apple.macbook.MacbookMemory
 import recognitioncommons.models.apple.macbook.MacbookModel
 import recognitioncommons.models.apple.macbook.MacbookSearchModel
-import recognitioncommons.models.sony.PlayStationFullModel
 
 /**
  * Iphone
@@ -109,12 +108,4 @@ fun AirPods.idString(): String {
         return model.name
     }
     return "${model.name}/${color.name}"
-}
-
-/**
- * Playstation
- */
-
-fun PlayStationFullModel.idString(): String {
-    return "${model.name}/${year}/${revision}"
 }

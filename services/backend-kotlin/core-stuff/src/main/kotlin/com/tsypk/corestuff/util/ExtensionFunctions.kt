@@ -27,13 +27,11 @@ import recognitioncommons.models.apple.iphone.IphoneFullModel
 import recognitioncommons.models.apple.macbook.Macbook
 import recognitioncommons.models.apple.macbook.MacbookFullModel
 import recognitioncommons.models.country.Country
-import recognitioncommons.models.sony.PlayStationFullModel
 import recognitioncommons.util.Presentation.AirPodsPresentation.toHumanReadableString
 import recognitioncommons.util.Presentation.IphonePresentation.toHumanReadableString
 import recognitioncommons.util.Presentation.MacbookPresentation.toHumanReadableString
 import recognitioncommons.util.extractor.airPodsFullModelFromId
 import recognitioncommons.util.extractor.macbookFullModelFromId
-import recognitioncommons.util.extractor.playStationFullModelFromId
 import recognitioncommons.util.idString
 import java.math.BigDecimal
 
@@ -112,18 +110,6 @@ fun airPodsFullModelFromId(input: String, country: Country): AirPodsFullModel {
         return airPodsFullModelFromId(input, country)
     } catch (e: InvalidAirPodsIdException) {
         throw NotAirPodsIdException(input)
-    }
-}
-
-
-/**
- * Playstation
- */
-fun playStationFullModelFromid(input: String): PlayStationFullModel {
-    try {
-        return playStationFullModelFromId(input)
-    } catch (e: PlaystationInvalidIdException) {
-        throw NotPlayStationException(input)
     }
 }
 
