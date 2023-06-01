@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  master_redis:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+    restart: always
+
+  auth:
+    container_name: auth
+    build:
+      context: ./services/backend-go/auth
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - master_redis
+
+  core-stuff:
+    container_name: core-stuff
+    build:
+      context: ./services/backend-kotlin/core-stuff
+    ports:
+      - "8081:8081"
+    restart: always
+    depends_on:
+      - auth
+    environment:
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_HOST: master_redis
+
+  core-notifications:
+    container_name: core-notifications
+    build:
+      context: ./services/backend-go/core-notifications
+    depends_on:
+      - core-stuff
+    restart: always
