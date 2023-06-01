@@ -365,7 +365,7 @@ components:
     SupplierStuffResponse:
       type: array
       items:
-        $ref: '#/components/schems/SupplierStuffDto'
+        $ref: '#/components/schemas/SupplierStuffDto'
 
     SupplierStuffUpdateRequest:
       type: object
