@@ -30,8 +30,8 @@ func GetRedis(stuffUpdatesWorkers, stuffUpdatesCap int, buyRequestsWorkers, buyR
 		buyRequestsWorkers:  buyRequestsWorkers,
 		service:             service,
 		client: *redis.NewClient(&redis.Options{
-			Addr: "localhost:6379",
-			//Addr:     "master_redis:6379",
+			//Addr: "localhost:6379",
+			Addr:     "master_redis:6379",
 			Password: "",
 			DB:       0,
 		}),
