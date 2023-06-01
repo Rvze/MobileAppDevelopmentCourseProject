@@ -371,10 +371,9 @@ func handle(c echo.Context) {
 	request.Method = method
 	request.URL = url
 	request.Header = map[string][]string{
-		"Username":     {c.Response().Header().Get("Username")},
-		"Role":         {c.Response().Header().Get("Role")},
-		"UserId":       {c.Response().Header().Get("UserId")},
-		"Content-Type": {"application/json"},
+		"Username": {c.Response().Header().Get("Username")},
+		"Role":     {c.Response().Header().Get("Role")},
+		"UserId":   {c.Response().Header().Get("UserId")},
 	}
 	request.Body = body
 
@@ -388,7 +387,7 @@ func handle(c echo.Context) {
 			c.String(http.StatusInternalServerError, "proxy error fetching response from back")
 		}
 
-		c.JSONPretty(resp.StatusCode(), string(resp.Body()), "    ")
+		c.String(resp.StatusCode(), string(resp.Body()))
 		return
 	} else {
 		fmt.Println("making request to: [POST]" + host + url)
@@ -398,7 +397,7 @@ func handle(c echo.Context) {
 			c.String(http.StatusInternalServerError, "proxy error fetching response from back")
 		}
 
-		c.JSONPretty(resp.StatusCode(), string(resp.Body()), "    ")
+		c.String(resp.StatusCode(), string(resp.Body()))
 		return
 	}
 
