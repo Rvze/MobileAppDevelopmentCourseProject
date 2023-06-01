@@ -371,9 +371,10 @@ func handle(c echo.Context) {
 	request.Method = method
 	request.URL = url
 	request.Header = map[string][]string{
-		"Username": {c.Response().Header().Get("Username")},
-		"Role":     {c.Response().Header().Get("Role")},
-		"UserId":   {c.Response().Header().Get("UserId")},
+		"Username":     {c.Response().Header().Get("Username")},
+		"Role":         {c.Response().Header().Get("Role")},
+		"UserId":       {c.Response().Header().Get("UserId")},
+		"Content-Type": {"application/json"},
 	}
 	request.Body = body
 
