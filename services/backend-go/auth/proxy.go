@@ -189,9 +189,16 @@ func main() {
 					return nil, err
 				}
 
+				userId, err := userRepo.GetIdByUsername(username)
+				if err != nil {
+					log.Printf("proxy extracting user id error: %v\n", err)
+					return nil, err
+				}
+
 				// both tokens added to response headers and ready to be sent to backend and returned to frontend
 				c.Response().Header().Set("X-Access-Token", newAccessToken)
 				c.Response().Header().Set("X-Refresh-Token", newRefreshToken)
+				c.Response().Header().Set("UserId", strconv.Itoa(userId))
 
 				c.Response().Header().Set("Username", username)
 				c.Response().Header().Set("Role", role)
@@ -225,9 +232,16 @@ func main() {
 
 			// TODO if access token is not expired and valid, then return nil and go to SuccessHandler [done]
 
+			userId, err := userRepo.GetIdByUsername(accessToken.Claims.(jwt.MapClaims)["username"].(string))
+			if err != nil {
+				log.Printf("proxy extracting user id error: %v\n", err)
+				return nil, err
+			}
+
 			c.Response().Header().Set("Username", accessToken.Claims.(jwt.MapClaims)["username"].(string))
 			c.Response().Header().Set("Role", accessToken.Claims.(jwt.MapClaims)["role"].(string))
 			c.Response().Header().Set("X-Access-Token", auth)
+			c.Response().Header().Set("UserId", strconv.Itoa(userId))
 			c.Response().Header().Set("X-Refresh-Token", "")
 			return nil, nil
 		},
@@ -274,6 +288,12 @@ func main() {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
+		userId, err := userRepo.GetIdByUsername(credentials.Username)
+		if err != nil {
+			log.Printf("proxy extracting user id error: %v\n", err)
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+		c.Response().Header().Set("UserId", strconv.Itoa(userId))
 		c.Response().Header().Set("X-Access-Token", newAccessToken)
 		c.Response().Header().Set("X-Refresh-Token", newRefreshToken)
 		c.Response().Header().Set("Role", credentials.Role)
@@ -324,6 +344,13 @@ func main() {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
+		userId, err := userRepo.GetIdByUsername(credentials.Username)
+		if err != nil {
+			log.Printf("proxy extracting user id error: %v\n", err)
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+
+		c.Response().Header().Set("UserId", strconv.Itoa(userId))
 		c.Response().Header().Set("X-Access-Token", newAccessToken)
 		c.Response().Header().Set("X-Refresh-Token", newRefreshToken)
 		c.Response().Header().Set("Role", role)
@@ -346,21 +373,34 @@ func handle(c echo.Context) {
 	request.Header = map[string][]string{
 		"Username": {c.Response().Header().Get("Username")},
 		"Role":     {c.Response().Header().Get("Role")},
+		"UserId":   {c.Response().Header().Get("UserId")},
 	}
 	request.Body = body
 
-	hostAndPath := "http://core-stuff:8083"
-	fmt.Println("making request to: " + hostAndPath + url)
-	//resp, err := request.Get("http://localhost:8083" + url)
-	resp, err := request.Get(hostAndPath + url)
-	if err != nil {
-		fmt.Println(err)
-		c.String(http.StatusInternalServerError, "proxy error fetching response from back")
+	//host := "http://localhost:8083"
+	host := "http://core-stuff:8083"
+	if method == "GET" {
+		fmt.Println("making request to: [GET]" + host + url)
+		resp, err := request.Get(host + url)
+		if err != nil {
+			fmt.Println(err)
+			c.String(http.StatusInternalServerError, "proxy error fetching response from back")
+		}
+
+		c.String(resp.StatusCode(), string(resp.Body()))
+		return
+	} else {
+		fmt.Println("making request to: [POST]" + host + url)
+		resp, err := request.Post(host + url)
+		if err != nil {
+			fmt.Println(err)
+			c.String(http.StatusInternalServerError, "proxy error fetching response from back")
+		}
+
+		c.String(resp.StatusCode(), string(resp.Body()))
+		return
 	}
 
-	fmt.Println(strconv.Itoa(resp.StatusCode()) + ": " + string(resp.Body()))
-	c.String(resp.StatusCode(), string(resp.Body()))
-	return
 }
 
 func initDb() *gorm.DB {
@@ -372,13 +412,6 @@ func initDb() *gorm.DB {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
-	sqldb, err := db.DB()
-	sqldb.SetMaxOpenConns(1)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
 	return db
 }
 
