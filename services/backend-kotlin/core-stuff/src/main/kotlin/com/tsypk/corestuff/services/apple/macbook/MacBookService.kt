@@ -22,28 +22,35 @@ class MacBookService(
 
         val result = mutableMapOf<String, StuffUpdateEvent>()
         before.forEach {
+            val modelId = it.value.first().id
             if (it.key in after) {
-                result[it.key] = StuffUpdateEvent(
-                    type = StuffUpdateType.UPDATE,
-                    modelId = it.key,
-                    payload = PriceUpdate(
-                        oldPrice = it.value.first().priceAmount.toLong(),
-                        newPrice = after[it.key]!!.first().priceAmount.toLong(),
+                val bef = it.value.first()
+                val aft = after[it.key]!!.first()
+
+                if (bef.priceAmount != aft.priceAmount) {
+                    result[it.key] = StuffUpdateEvent(
+                        type = StuffUpdateType.UPDATE,
+                        modelId = modelId,
+                        payload = PriceUpdate(
+                            oldPrice = bef.priceAmount.toLong(),
+                            newPrice = aft.priceAmount.toLong(),
+                        )
                     )
-                )
+                }
             } else {
                 result[it.key] = StuffUpdateEvent(
                     type = StuffUpdateType.DELETE,
-                    modelId = it.key,
+                    modelId = modelId,
                 )
             }
         }
 
         after.forEach {
-            if (it.key !in after) {
+            val modelId = it.value.first().id
+            if (it.key !in before) {
                 result[it.key] = StuffUpdateEvent(
                     type = StuffUpdateType.CREATE,
-                    modelId = it.key,
+                    modelId = modelId,
                 )
             }
         }

@@ -30,8 +30,8 @@ func GetRedis(stuffUpdatesWorkers, stuffUpdatesCap int, buyRequestsWorkers, buyR
 		buyRequestsWorkers:  buyRequestsWorkers,
 		service:             service,
 		client: *redis.NewClient(&redis.Options{
-			//Addr:     "localhost:6379",
-			Addr:     "master_redis:6379",
+			Addr: "localhost:6379",
+			//Addr:     "master_redis:6379",
 			Password: "",
 			DB:       0,
 		}),
@@ -65,7 +65,7 @@ func (r *Redis) consume() {
 	for {
 		msg, err := redisPubSub.ReceiveMessage()
 		if err != nil {
-			fmt.Println(log.Err(fmt.Sprintf("Error receiving msg from %s", msg.Channel), err))
+			fmt.Println(log.Err(fmt.Sprintf("Error receiving msg from"), err))
 			time.Sleep(100 * time.Millisecond)
 			continue
 		}

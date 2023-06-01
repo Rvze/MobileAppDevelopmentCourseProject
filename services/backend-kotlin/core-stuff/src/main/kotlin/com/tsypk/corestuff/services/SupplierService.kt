@@ -4,7 +4,6 @@ import com.tsypk.corestuff.controller.dto.stuff.request.TextRequest
 import com.tsypk.corestuff.controller.dto.stuff.response.StuffSearchResponse
 import com.tsypk.corestuff.exception.RecognitionException
 import com.tsypk.corestuff.model.notification.StuffUpdateBatchEvent
-import com.tsypk.corestuff.model.notification.StuffUpdateEvent
 import com.tsypk.corestuff.repository.SupplierRepository
 import com.tsypk.corestuff.services.apple.airpods.AirPodsService
 import com.tsypk.corestuff.services.apple.iphone.IphoneService
@@ -38,7 +37,7 @@ class SupplierService(
         if (recognized.allEmpty())
             throw RecognitionException(errorMsg = recognized.errors.toString())
 
-        val diff = buildList<StuffUpdateEvent> {
+        val diff = buildList {
             addAll(
                 airPodsService.updateAllForSupplier(
                     supplierId = supplierId,

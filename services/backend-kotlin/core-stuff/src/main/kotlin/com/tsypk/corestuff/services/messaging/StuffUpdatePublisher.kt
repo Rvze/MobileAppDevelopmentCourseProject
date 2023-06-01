@@ -13,6 +13,12 @@ class StuffUpdatePublisher(
     private val objectMapper: ObjectMapper,
 ) {
     fun publish(stuffUpdateBatchEvent: StuffUpdateBatchEvent) {
+        if (stuffUpdateBatchEvent.updates.isEmpty()) {
+            println("Skipping publishing empty ${stuffUpdateBatchEvent.updates}")
+            return
+        }
+
+        println("Publishing ${stuffUpdateBatchEvent.updates}")
         redisTemplate.convertAndSend(stuffUpdateChannel.topic, objectMapper.writeValueAsString(stuffUpdateBatchEvent))
     }
 }
