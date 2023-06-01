@@ -7,7 +7,6 @@ import com.tsypk.corestuff.model.notification.StuffUpdateEvent
 import com.tsypk.corestuff.model.notification.StuffUpdateType
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.listener.ChannelTopic
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 @Component
@@ -20,7 +19,7 @@ class StuffUpdatePublisher(
         redisTemplate.convertAndSend(stuffUpdateChannel.topic, objectMapper.writeValueAsString(stuffUpdateBatchEvent))
     }
 
-    @Scheduled(fixedDelay = 5000L)
+    // @Scheduled(fixedDelay = 5000L)
     fun publishCron() {
         publish(
             StuffUpdateBatchEvent(

@@ -17,14 +17,14 @@ class BuyRequestPublisher(
     }
 
     // @Scheduled(fixedDelay = 5000L)
-    // fun publishCron() {
-    //     publish(
-    //         BuyStuffRequestEvent(
-    //             buyerId = 1L,
-    //             supplierId = 0L,
-    //             modelId = "IPHONE_14_PRO_MAX/GB_512/SPACE_BLACK",
-    //             count = 3,
-    //         )
-    //     )
-    // }
+    fun publishCron() {
+        publish(
+            BuyStuffRequestEvent(
+                buyerId = 1L,
+                supplierId = 0L,
+                modelId = "IPHONE_14_PRO_MAX/GB_512/SPACE_BLACK",
+                count = 3,
+            )
+        )
+    }
 }
