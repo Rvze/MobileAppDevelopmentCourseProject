@@ -3,10 +3,13 @@ package com.tsypk.corestuff.services
 import com.tsypk.corestuff.controller.dto.stuff.request.TextRequest
 import com.tsypk.corestuff.controller.dto.stuff.response.StuffSearchResponse
 import com.tsypk.corestuff.exception.RecognitionException
+import com.tsypk.corestuff.model.notification.StuffUpdateBatchEvent
+import com.tsypk.corestuff.model.notification.StuffUpdateEvent
 import com.tsypk.corestuff.repository.SupplierRepository
 import com.tsypk.corestuff.services.apple.airpods.AirPodsService
 import com.tsypk.corestuff.services.apple.iphone.IphoneService
 import com.tsypk.corestuff.services.apple.macbook.MacBookService
+import com.tsypk.corestuff.services.messaging.StuffUpdatePublisher
 import com.tsypk.corestuff.util.toSupplierAirpods
 import com.tsypk.corestuff.util.toSupplierIphone
 import com.tsypk.corestuff.util.toSupplierMacbook
@@ -20,8 +23,9 @@ class SupplierService(
 
     private val airPodsService: AirPodsService,
     private val iphoneService: IphoneService,
-    private val macbookService: MacBookService
+    private val macbookService: MacBookService,
 
+    private val stuffUpdatePublisher: StuffUpdatePublisher,
 ) {
 
     fun getSupplierStuffById(supplierId: Long): List<StuffSearchResponse> {
@@ -33,9 +37,28 @@ class SupplierService(
         val recognized = recognitionService.recognize(textRequest.text)
         if (recognized.allEmpty())
             throw RecognitionException(errorMsg = recognized.errors.toString())
-        airPodsService.updateAllForSupplier(supplierId, recognized.airPods.map { it.toSupplierAirpods(supplierId) })
-        iphoneService.updateAllForSupplier(supplierId, recognized.iphones.map { it.toSupplierIphone(supplierId) })
-        macbookService.updateAllForSupplier(supplierId, recognized.macbooks.map { it.toSupplierMacbook(supplierId) })
-    }
 
+        val diff = buildList<StuffUpdateEvent> {
+            addAll(
+                airPodsService.updateAllForSupplier(
+                    supplierId = supplierId,
+                    airpods = recognized.airPods.map { it.toSupplierAirpods(supplierId) },
+                )
+            )
+            addAll(
+                iphoneService.updateAllForSupplier(
+                    supplierId = supplierId,
+                    iphones = recognized.iphones.map { it.toSupplierIphone(supplierId) },
+                )
+            )
+            addAll(
+                macbookService.updateAllForSupplier(
+                    supplierId = supplierId,
+                    macbooks = recognized.macbooks.map { it.toSupplierMacbook(supplierId) },
+                )
+            )
+        }
+
+        stuffUpdatePublisher.publish(StuffUpdateBatchEvent(diff))
+    }
 }

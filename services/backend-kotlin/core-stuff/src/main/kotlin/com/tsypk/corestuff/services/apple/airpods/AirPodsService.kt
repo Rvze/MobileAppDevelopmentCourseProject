@@ -2,26 +2,63 @@ package com.tsypk.corestuff.services.apple.airpods
 
 import com.tsypk.corestuff.controller.dto.airpods.AirPodsFindBestRequest
 import com.tsypk.corestuff.model.apple.SupplierAirPods
+import com.tsypk.corestuff.model.notification.PriceUpdate
+import com.tsypk.corestuff.model.notification.StuffUpdateEvent
+import com.tsypk.corestuff.model.notification.StuffUpdateType
 import com.tsypk.corestuff.repository.apple.airpods.SupplierAirPodsRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AirPodsService(
-    private val supplierAirPodsRepository: SupplierAirPodsRepository,
+    private val repository: SupplierAirPodsRepository,
 ) {
-    fun updateAllForSupplier(supplierId: Long, airpods: List<SupplierAirPods>) {
-        supplierAirPodsRepository.deleteAllBySupplierId(supplierId)
-        supplierAirPodsRepository.batchInsertForSupplier(supplierId, airpods)
+    @Transactional
+    fun updateAllForSupplier(supplierId: Long, airpods: List<SupplierAirPods>): List<StuffUpdateEvent> {
+        val before = repository.getAllBySupplierId(supplierId).groupBy { "${it.id}/${it.country.name}" }
+        repository.deleteAllBySupplierId(supplierId)
+        repository.batchInsertForSupplier(supplierId, airpods)
+        val after = repository.getAllBySupplierId(supplierId).groupBy { "${it.id}/${it.country.name}" }
+
+        val result = mutableMapOf<String, StuffUpdateEvent>()
+        before.forEach {
+            if (it.key in after) {
+                result[it.key] = StuffUpdateEvent(
+                    type = StuffUpdateType.UPDATE,
+                    modelId = it.key,
+                    payload = PriceUpdate(
+                        oldPrice = it.value.first().priceAmount.toLong(),
+                        newPrice = after[it.key]!!.first().priceAmount.toLong(),
+                    )
+                )
+            } else {
+                result[it.key] = StuffUpdateEvent(
+                    type = StuffUpdateType.DELETE,
+                    modelId = it.key,
+                )
+            }
+        }
+
+        after.forEach {
+            if (it.key !in after) {
+                result[it.key] = StuffUpdateEvent(
+                    type = StuffUpdateType.CREATE,
+                    modelId = it.key,
+                )
+            }
+        }
+
+        return result.values.toList()
     }
 
     fun findBestPrices(request: AirPodsFindBestRequest): List<SupplierAirPods> {
         return if (request.country == null) {
-            supplierAirPodsRepository.findByModelAndColor(
+            repository.findByModelAndColor(
                 model = request.model,
                 color = request.color,
             )
         } else {
-            supplierAirPodsRepository.findByModelAndColorWithCountry(
+            repository.findByModelAndColorWithCountry(
                 model = request.model,
                 color = request.color,
                 country = request.country,
@@ -30,11 +67,11 @@ class AirPodsService(
     }
 
     fun getAll(): List<SupplierAirPods> {
-        return supplierAirPodsRepository.getAll()
+        return repository.getAll()
     }
 
     @Deprecated("Use for only scheduled db update")
     fun truncateSuppliersIphones() {
-        supplierAirPodsRepository.truncateTable()
+        repository.truncateTable()
     }
 }

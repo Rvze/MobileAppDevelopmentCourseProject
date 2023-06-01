@@ -7,8 +7,8 @@ import java.math.BigDecimal
 import java.time.Instant
 
 data class SupplierMacbook(
-    var macId: String,
-    val macbookFullModel: MacbookFullModel = macbookFullModelFromId(macId),
+    var id: String,
+    val macbookFullModel: MacbookFullModel = macbookFullModelFromId(id),
     var supplierId: Long,
     var country: Country,
     var priceAmount: BigDecimal,

@@ -28,9 +28,11 @@ class SupplierController(
         consumes = ["application/json"],
         produces = ["application/json"]
     )
-    fun addStuffForSupplier(@RequestHeader("UserID") userId: Long, @RequestBody textRequest: TextRequest): ResponseEntity<Unit> {
+    fun addStuffForSupplier(
+        @RequestHeader("UserID") userId: Long,
+        @RequestBody textRequest: TextRequest
+    ): ResponseEntity<Unit> {
         supplierService.addStuffToSupplier(userId, textRequest)
         return ResponseEntity.ok(Unit)
     }
-
 }

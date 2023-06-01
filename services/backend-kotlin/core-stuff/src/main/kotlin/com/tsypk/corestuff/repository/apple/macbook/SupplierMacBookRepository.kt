@@ -33,7 +33,7 @@ class SupplierMacBookRepository(
         """.trimIndent(), macbooks, batchSize
         ) { ps: PreparedStatement, macbook: SupplierMacbook ->
             var index = 1
-            ps.setString(index++, macbook.macId)
+            ps.setString(index++, macbook.id)
             ps.setLong(index++, supplierId)
             ps.setString(index++, macbook.country.name)
             ps.setBigDecimal(index++, macbook.priceAmount)
@@ -111,7 +111,7 @@ class SupplierMacBookRepository(
         private val ROW_MAPPER = RowMapper { rs, _ ->
             SupplierMacbook(
                 supplierId = rs.getLong("supplier_id"),
-                macId = rs.getString("mac_id"),
+                id = rs.getString("mac_id"),
                 country = Country.valueOf(rs.getString("country")),
                 priceAmount = rs.getBigDecimal("price_amount"),
                 priceCurrency = rs.getString("price_currency")

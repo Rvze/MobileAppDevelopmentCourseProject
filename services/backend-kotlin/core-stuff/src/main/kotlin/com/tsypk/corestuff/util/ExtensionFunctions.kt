@@ -119,7 +119,7 @@ fun airPodsFullModelFromId(input: String, country: Country): AirPodsFullModel {
 fun MacbookDto.toSupplierMacbookMapper(supplierId: Long): SupplierMacbook =
     SupplierMacbook(
         supplierId = supplierId,
-        macId = this.id,
+        id = this.id,
         country = this.country,
         priceAmount = this.money.amount,
         priceCurrency = this.money.currency
@@ -127,7 +127,7 @@ fun MacbookDto.toSupplierMacbookMapper(supplierId: Long): SupplierMacbook =
 
 fun SupplierMacbook.toSupplierMacbookDtoMapper(): SupplierMacbookDto =
     SupplierMacbookDto(
-        id = this.macId,
+        id = this.id,
         supplierId = this.supplierId,
         country = this.country,
         money = Money(this.priceAmount, this.priceCurrency)
@@ -135,7 +135,7 @@ fun SupplierMacbook.toSupplierMacbookDtoMapper(): SupplierMacbookDto =
 
 fun Macbook.toSupplierMacbook(supplierId: Long): SupplierMacbook =
     SupplierMacbook(
-        macId = this.idString(),
+        id = this.idString(),
         supplierId = supplierId,
         country = this.country,
         priceAmount = BigDecimal(this.price)
@@ -211,22 +211,22 @@ fun buildResponse(
         val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
         supplierMacbooks.forEach {
             val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
-            if (!visited.containsKey(it.macId)) {
+            if (!visited.containsKey(it.id)) {
                 val screenPropery = Property("SCREEN", it.macbookFullModel.model.screen.toString())
                 val memoryProperty = Property(name = "MEMORY", it.macbookFullModel.memory.toString())
                 val cpuProperty = Property("CHIP", it.macbookFullModel.model.appleChip.toString())
                 val ramProperty = Property("RAM", it.macbookFullModel.ram.toString())
                 val colorProperty = Property("COLOR", it.macbookFullModel.color.toString())
                 val stuffSearchResponse = StuffSearchResponse(
-                    modelId = it.macId,
+                    modelId = it.id,
                     stuffType = StuffType.MACBOOK,
                     title = it.macbookFullModel.model.toHumanReadableString(),
                     properties = listOf(screenPropery, memoryProperty, cpuProperty, ramProperty, colorProperty),
                     supplierPrices = arrayListOf(price)
                 )
-                visited[it.macId] = stuffSearchResponse
+                visited[it.id] = stuffSearchResponse
             } else {
-                visited[it.macId]!!.supplierPrices.add(price)
+                visited[it.id]!!.supplierPrices.add(price)
             }
         }
         stuffSearchResponses.addAll(visited.values)
