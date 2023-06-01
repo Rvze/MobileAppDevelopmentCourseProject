@@ -16,6 +16,7 @@ import (
 	"gorm.io/gorm/logger"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -337,7 +338,6 @@ func main() {
 func handle(c echo.Context) {
 	method := c.Request().Method
 	url := c.Request().URL.Path
-	host := c.Request().Host
 	body := c.Request().Body
 
 	request := client.NewRequest()
@@ -349,14 +349,16 @@ func handle(c echo.Context) {
 	}
 	request.Body = body
 
-	fmt.Println("making request to: " + "http://" + host + url)
+	hostAndPath := "http://core-stuff:8083"
+	fmt.Println("making request to: " + hostAndPath + url)
 	//resp, err := request.Get("http://localhost:8083" + url)
-	resp, err := request.Get("http://core-stuff:8083" + url)
+	resp, err := request.Get(hostAndPath + url)
 	if err != nil {
 		fmt.Println(err)
 		c.String(http.StatusInternalServerError, "proxy error fetching response from back")
 	}
 
+	fmt.Println(strconv.Itoa(resp.StatusCode()) + ": " + string(resp.Body()))
 	c.String(resp.StatusCode(), string(resp.Body()))
 	return
 }
