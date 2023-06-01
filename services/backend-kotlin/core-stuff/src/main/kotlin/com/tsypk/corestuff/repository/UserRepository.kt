@@ -18,7 +18,7 @@ class UserRepository(
                 " VALUES (:user_id,:stuff_id,:supplier_id,:count)"
         parameterizedJdbcTemplate.update(
             insertSql,
-            params
+            params,
         )
     }
 

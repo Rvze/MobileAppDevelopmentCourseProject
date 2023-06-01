@@ -4,6 +4,7 @@ import com.tsypk.corestuff.controller.dto.airpods.AirPodsFindBestRequest
 import com.tsypk.corestuff.controller.dto.iphone.IphonesFindBestRequest
 import com.tsypk.corestuff.controller.dto.macbook.MacbookFindBestRequest
 import com.tsypk.corestuff.controller.dto.stuff.request.BuyStuffRequest
+import com.tsypk.corestuff.controller.dto.stuff.request.BuyStuffRequestEvent
 import com.tsypk.corestuff.controller.dto.stuff.request.TextRequest
 import com.tsypk.corestuff.controller.dto.stuff.response.StuffSearchResponse
 import com.tsypk.corestuff.exception.RecognitionException
@@ -11,6 +12,7 @@ import com.tsypk.corestuff.repository.UserRepository
 import com.tsypk.corestuff.services.apple.airpods.AirPodsService
 import com.tsypk.corestuff.services.apple.iphone.IphoneService
 import com.tsypk.corestuff.services.apple.macbook.MacBookService
+import com.tsypk.corestuff.services.messaging.BuyRequestPublisher
 import com.tsypk.corestuff.util.buildResponse
 import com.tsypk.corestuff.util.toUsersStuff
 import org.springframework.stereotype.Service
@@ -24,7 +26,8 @@ class StuffService(
 
     private val userRepository: UserRepository,
 
-    private val recognitionService: RecognitionService
+    private val recognitionService: RecognitionService,
+    private val buyRequestPublisher: BuyRequestPublisher,
 ) {
     @Transactional
     fun searchByText(textRequest: TextRequest): List<StuffSearchResponse> {
@@ -65,5 +68,13 @@ class StuffService(
 
     fun buyStuff(buyStuffRequest: BuyStuffRequest, userId: Long) {
         userRepository.saveUserStuff(buyStuffRequest.toUsersStuff(userId))
+        buyRequestPublisher.publish(
+            buyStuffRequestEvent = BuyStuffRequestEvent(
+                buyerId = userId,
+                supplierId = buyStuffRequest.supplierId,
+                modelId = buyStuffRequest.modelId,
+                count = buyStuffRequest.count,
+            )
+        )
     }
 }

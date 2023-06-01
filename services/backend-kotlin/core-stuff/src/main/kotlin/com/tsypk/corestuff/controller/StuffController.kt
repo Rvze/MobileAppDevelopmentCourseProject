@@ -28,9 +28,11 @@ class StuffController(
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    fun buyStuff(@RequestHeader("UserID") userId: Long, @RequestBody buyStuffRequest: BuyStuffRequest): ResponseEntity<Unit> {
+    fun buyStuff(
+        @RequestHeader("UserID") userId: Long,
+        @RequestBody buyStuffRequest: BuyStuffRequest
+    ): ResponseEntity<Unit> {
         stuffService.buyStuff(buyStuffRequest, userId)
         return ResponseEntity.ok(Unit)
     }
-
 }

@@ -34,7 +34,7 @@ func initDB() *pgxpool.Pool {
 		os.Exit(1)
 	}
 
-	config.MaxConns = 2
+	config.MaxConns = 1
 
 	pool, err := pgxpool.ConnectConfig(context.Background(), config)
 	if err != nil {

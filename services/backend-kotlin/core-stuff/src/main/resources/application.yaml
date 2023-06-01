@@ -9,7 +9,7 @@ spring:
     url: jdbc:postgresql://c-c9qikb36ojt5s6c7vpfo.rw.mdb.yandexcloud.net:6432/tsypk?currentSchema=dev
     username: tsypk
     password: 15.Aleksei
-    max-active: 2
+    max-active: 1
 
   data:
     redis:

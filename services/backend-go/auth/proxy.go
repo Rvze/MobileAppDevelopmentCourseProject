@@ -372,7 +372,7 @@ func initDb() *gorm.DB {
 	}
 
 	sqldb, err := db.DB()
-	sqldb.SetMaxOpenConns(3)
+	sqldb.SetMaxOpenConns(1)
 	if err != nil {
 		log.Fatalln(err)
 	}
