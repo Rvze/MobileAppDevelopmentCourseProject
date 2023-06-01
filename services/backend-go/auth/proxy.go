@@ -388,7 +388,7 @@ func handle(c echo.Context) {
 			c.String(http.StatusInternalServerError, "proxy error fetching response from back")
 		}
 
-		c.JSON(resp.StatusCode(), string(resp.Body()))
+		c.JSONPretty(resp.StatusCode(), string(resp.Body()), "    ")
 		return
 	} else {
 		fmt.Println("making request to: [POST]" + host + url)
@@ -398,7 +398,7 @@ func handle(c echo.Context) {
 			c.String(http.StatusInternalServerError, "proxy error fetching response from back")
 		}
 
-		c.JSON(resp.StatusCode(), string(resp.Body()))
+		c.JSONP(resp.StatusCode(), string(resp.Body()), "    ")
 		return
 	}
 
