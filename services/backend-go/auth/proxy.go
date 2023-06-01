@@ -398,7 +398,7 @@ func handle(c echo.Context) {
 			c.String(http.StatusInternalServerError, "proxy error fetching response from back")
 		}
 
-		c.JSONP(resp.StatusCode(), string(resp.Body()), "    ")
+		c.JSONPretty(resp.StatusCode(), string(resp.Body()), "    ")
 		return
 	}
 
