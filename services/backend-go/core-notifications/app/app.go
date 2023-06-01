@@ -28,11 +28,17 @@ func Start() {
 
 func initDB() *pgxpool.Pool {
 	dbUrl := "postgres://" + "tsypk" + ":" + "15.Aleksei" + "@" + "c-c9qikb36ojt5s6c7vpfo.rw.mdb.yandexcloud.net" + ":" + "6432" + "/tsypk?search_path=dev"
-	pool, err := pgxpool.Connect(context.Background(), dbUrl)
+	config, err := pgxpool.ParseConfig(dbUrl)
 	if err != nil {
-		_, err := fmt.Fprintf(os.Stderr, "Unnable to connect to database: %v\n", err)
-		if err != nil {
-		}
+		fmt.Fprintf(os.Stderr, "Unnable to parse config: %v\n", err)
+		os.Exit(1)
+	}
+
+	config.MaxConns = 2
+
+	pool, err := pgxpool.ConnectConfig(context.Background(), config)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unnable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
 
