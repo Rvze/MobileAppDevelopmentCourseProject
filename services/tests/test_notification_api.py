@@ -1,3 +1,6 @@
+import json
+from types import SimpleNamespace
+
 import requests
 
 SUBSCRIBE_ENDPOINT = "http://51.250.101.189:8080/v1/notification/stuff"
@@ -7,6 +10,10 @@ SUPPLIER_REGISTER_ENDPOINT = "http://51.250.101.189:8080/register"
 SUPPLIER_LOGIN_ENDPOINT = "http://51.250.101.189:8080/login"
 
 ADD_STUFF_ENDPOINT = "http://51.250.101.189:8080/v1/supplier/stuff"
+
+supplier_user_id = int()
+supplier_access_token = str()
+
 user_id = int()
 access_token = str()
 
@@ -20,24 +27,24 @@ def test_register():
         "password": password,
         "role": role
     }
-    global access_token
-    global user_id
+    global supplier_user_id
+    global supplier_access_token
     response = requests.post(SUPPLIER_REGISTER_ENDPOINT, json=body)
     if response.status_code == 200:
-        access_token = response.headers['X-Access-Token']
-        user_id = response.headers['Userid']
+        supplier_access_token = response.headers['X-Access-Token']
+        supplier_user_id = response.headers['Userid']
     else:
         response = requests.post(SUPPLIER_LOGIN_ENDPOINT, json=body)
-        access_token = response.headers['X-Access-Token']
-        user_id = response.headers['Userid']
+        supplier_access_token = response.headers['X-Access-Token']
+        supplier_user_id = response.headers['Userid']
 
 
 def test_add_iphone():
     headers = {
-        'UserID': str(user_id),
+        'UserID': str(supplier_user_id),
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'X-Access-Token': access_token
+        'X-Access-Token': supplier_access_token
     }
     body = {
         "text": "14 PRO 512 black 150000.00 🇺🇸"
@@ -85,10 +92,10 @@ def test_subscribe_on_model():
 
 def test_change_price():
     headers = {
-        'UserID': str(user_id),
+        'UserID': str(supplier_user_id),
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'X-Access-Token': access_token
+        'X-Access-Token': supplier_access_token
     }
     body = {
         "text": "14 PRO 512 black 160000.00 🇺🇸"
@@ -106,4 +113,7 @@ def test_get_list_notification():
     }
     response = requests.get(NOTIFICATION_ENDPOINT, headers=headers)
     assert response.status_code == 200
-    assert response.text != ""
+    print(response.text)
+    notification = json.loads(response.text, object_hook=lambda d: SimpleNamespace(**d))
+    for r in notification:
+        assert r.status == "NEW"
