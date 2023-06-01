@@ -21,13 +21,14 @@ services:
     build:
       context: ./services/backend-kotlin/core-stuff
     ports:
-      - "8081:8081"
+      - "8083:8083"
     restart: always
     depends_on:
       - auth
     environment:
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_DATA_REDIS_HOST: master_redis
+#      mobileappdevelopmentcourseproject_master_redis_1
 
   core-notifications:
     container_name: core-notifications

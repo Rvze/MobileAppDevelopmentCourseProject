@@ -3,7 +3,7 @@ info:
   title: API Title
   version: "1.0"
 servers:
-  - url: http://localhost:8081
+  - url: http://localhost:8083
     description: local
 paths:
   /v1/stuff/search-by-text:

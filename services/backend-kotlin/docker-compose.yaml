@@ -7,4 +7,4 @@ services:
     build:
       context: ./core-stuff
     ports:
-      - "8081:8081"
+      - "8083:8083"

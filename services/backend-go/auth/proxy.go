@@ -350,8 +350,8 @@ func handle(c echo.Context) {
 	request.Body = body
 
 	fmt.Println("making request to: " + "http://" + host + url)
-	//resp, err := request.Get("http://localhost:8081" + url)
-	resp, err := request.Get("http://core-stuff:8081" + url)
+	//resp, err := request.Get("http://localhost:8083" + url)
+	resp, err := request.Get("http://core-stuff:8083" + url)
 	if err != nil {
 		fmt.Println(err)
 		c.String(http.StatusInternalServerError, "proxy error fetching response from back")
