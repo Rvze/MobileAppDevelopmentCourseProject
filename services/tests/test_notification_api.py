@@ -106,4 +106,4 @@ def test_get_list_notification():
     }
     response = requests.get(NOTIFICATION_ENDPOINT, headers=headers)
     assert response.status_code == 200
-    print(response.text)
+    assert response.text != ""
