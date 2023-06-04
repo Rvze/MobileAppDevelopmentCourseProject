@@ -2,6 +2,7 @@ package com.tsypk.corestuff.services
 
 import com.tsypk.corestuff.controller.dto.FullRecognitionResult
 import com.tsypk.corestuff.controller.dto.SearchModelsRecognitionResult
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import recognitioncommons.exception.StaffRecognitionException
 import recognitioncommons.exception.staffRecognitionExceptionToHumanReadable
@@ -16,6 +17,8 @@ class RecognitionService(
     private val macbookRecognitionService: MacbookRecognitionService,
     private val iphoneRecognitionService: IphoneRecognitionService,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     fun recognizeSearchModels(text: String): SearchModelsRecognitionResult {
         val result = SearchModelsRecognitionResult()
         normalizeText(text).forEach {
@@ -64,6 +67,10 @@ class RecognitionService(
                 )
             }
         }
+        logger.info("Iphones : {}", result.iphones)
+        logger.info("Airpods : {}", result.airPods)
+        logger.info("Macbooks : {}", result.macbooks)
+        logger.info("Errors : {}", result.errors)
         return result.copy(
             iphones = result.iphones.toSet().toMutableList(),
             airPods = result.airPods.toSet().toMutableList(),

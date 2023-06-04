@@ -12,6 +12,7 @@ import com.tsypk.corestuff.services.messaging.StuffUpdatePublisher
 import com.tsypk.corestuff.util.toSupplierAirpods
 import com.tsypk.corestuff.util.toSupplierIphone
 import com.tsypk.corestuff.util.toSupplierMacbook
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -26,6 +27,10 @@ class SupplierService(
 
     private val stuffUpdatePublisher: StuffUpdatePublisher,
 ) {
+    companion object {
+        @JvmStatic
+        private val logger = LoggerFactory.getLogger(SupplierService::class.java)
+    }
 
     fun getSupplierStuffById(supplierId: Long): List<StuffSearchResponse> {
         return supplierRepository.getSupplierStuff(supplierId)
@@ -34,6 +39,7 @@ class SupplierService(
     @Transactional
     fun addStuffToSupplier(supplierId: Long, textRequest: TextRequest) {
         val recognized = recognitionService.recognize(textRequest.text)
+        logger.info("Text : {}",textRequest.text)
         if (recognized.allEmpty())
             throw RecognitionException(errorMsg = recognized.errors.toString())
 
