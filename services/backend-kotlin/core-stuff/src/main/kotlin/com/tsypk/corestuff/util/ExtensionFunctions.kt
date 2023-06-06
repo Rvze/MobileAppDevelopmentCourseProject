@@ -173,7 +173,7 @@ fun buildResponse(
             val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
             if (!visited.containsKey(it.id)) {
                 val stuffSearchResponse = StuffSearchResponse(
-                    modelId = it.airPodsFullModel.toString(),
+                    modelId = "${it.id}/${it.country.name}",
                     stuffType = StuffType.AIRPODS,
                     title = it.airPodsFullModel.model.toHumanReadableString(),
                     properties = listOf(),
@@ -194,7 +194,7 @@ fun buildResponse(
                 val memoryProperty = Property("MEMORY", it.iphoneFullModel.memory.toString())
                 val colorProperty = Property("COLOR", it.iphoneFullModel.color.toString())
                 val stuffSearchResponse = StuffSearchResponse(
-                    modelId = it.iphoneFullModel.toString(),
+                    modelId = "${it.id}/${it.country.name}",
                     stuffType = StuffType.IPHONE,
                     title = it.iphoneFullModel.model.toHumanReadableString(),
                     properties = listOf(memoryProperty, colorProperty),
@@ -218,7 +218,7 @@ fun buildResponse(
                 val ramProperty = Property("RAM", it.macbookFullModel.ram.toString())
                 val colorProperty = Property("COLOR", it.macbookFullModel.color.toString())
                 val stuffSearchResponse = StuffSearchResponse(
-                    modelId = it.id,
+                    modelId = "${it.id}/${it.country.name}",
                     stuffType = StuffType.MACBOOK,
                     title = it.macbookFullModel.model.toHumanReadableString(),
                     properties = listOf(screenPropery, memoryProperty, cpuProperty, ramProperty, colorProperty),
