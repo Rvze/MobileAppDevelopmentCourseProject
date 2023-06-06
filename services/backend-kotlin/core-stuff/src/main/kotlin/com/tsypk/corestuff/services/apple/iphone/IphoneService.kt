@@ -22,7 +22,6 @@ class IphoneService(
 
         val result = mutableMapOf<String, StuffUpdateEvent>()
         before.forEach {
-            val modelId = it.value.first().id
             if (it.key in after) {
                 val bef = it.value.first()
                 val aft = after[it.key]!!.first()
@@ -30,7 +29,7 @@ class IphoneService(
                 if (bef.priceAmount != aft.priceAmount) {
                     result[it.key] = StuffUpdateEvent(
                         type = StuffUpdateType.UPDATE,
-                        modelId = modelId,
+                        modelId = it.key,
                         payload = PriceUpdate(
                             oldPrice = bef.priceAmount.toLong(),
                             newPrice = aft.priceAmount.toLong(),
@@ -40,17 +39,16 @@ class IphoneService(
             } else {
                 result[it.key] = StuffUpdateEvent(
                     type = StuffUpdateType.DELETE,
-                    modelId = modelId,
+                    modelId = it.key,
                 )
             }
         }
 
         after.forEach {
-            val modelId = it.value.first().id
             if (it.key !in before) {
                 result[it.key] = StuffUpdateEvent(
                     type = StuffUpdateType.CREATE,
-                    modelId = modelId,
+                    modelId = it.key,
                 )
             }
         }
