@@ -172,10 +172,11 @@ fun buildResponse(
     if (!supplierAirPods.isNullOrEmpty()) {
         val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
         supplierAirPods.forEach {
+            val modelId = "${it.id}/${it.country.name}"
             val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
-            if (!visited.containsKey(it.id)) {
+            if (!visited.containsKey(modelId)) {
                 val stuffSearchResponse = StuffSearchResponse(
-                    modelId = "${it.id}/${it.country.name}",
+                    modelId = modelId,
                     stuffType = StuffType.AIRPODS,
                     title = it.airPodsFullModel.model.toHumanReadableString(),
                     properties = listOf(
@@ -183,9 +184,9 @@ fun buildResponse(
                     ),
                     supplierPrices = arrayListOf(price)
                 )
-                visited[it.id] = stuffSearchResponse
+                visited[modelId] = stuffSearchResponse
             } else {
-                visited[it.id]!!.supplierPrices.add(price)
+                visited[modelId]!!.supplierPrices.add(price)
             }
         }
         stuffSearchResponses.addAll(visited.values)
@@ -193,21 +194,22 @@ fun buildResponse(
     if (!supplierIphones.isNullOrEmpty()) {
         val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
         supplierIphones.forEach {
+            val modelId = "${it.id}/${it.country.name}"
             val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
-            if (!visited.containsKey(it.id)) {
+            if (!visited.containsKey(modelId)) {
                 val memoryProperty = Property("MEMORY", it.iphoneFullModel.memory.toString())
                 val colorProperty = Property("COLOR", it.iphoneFullModel.color.toString())
                 val countryProperty = Property("COUNTRY", it.country.nameRu)
                 val stuffSearchResponse = StuffSearchResponse(
-                    modelId = "${it.id}/${it.country.name}",
+                    modelId = modelId,
                     stuffType = StuffType.IPHONE,
                     title = it.iphoneFullModel.model.toHumanReadableString(),
                     properties = listOf(memoryProperty, colorProperty, countryProperty),
                     supplierPrices = arrayListOf(price)
                 )
-                visited[it.id] = stuffSearchResponse
+                visited[modelId] = stuffSearchResponse
             } else {
-                visited[it.id]!!.supplierPrices.add(price)
+                visited[modelId]!!.supplierPrices.add(price)
             }
         }
         stuffSearchResponses.addAll(visited.values)
@@ -215,8 +217,9 @@ fun buildResponse(
     if (!supplierMacbooks.isNullOrEmpty()) {
         val visited: HashMap<String, StuffSearchResponse> = hashMapOf()
         supplierMacbooks.forEach {
+            val modelId = "${it.id}/${it.country.name}"
             val price = SupplierPrice(it.supplierId, Price(it.priceAmount.toDouble(), it.priceCurrency))
-            if (!visited.containsKey(it.id)) {
+            if (!visited.containsKey(modelId)) {
                 val screenPropery = Property("SCREEN", it.macbookFullModel.model.screen.toString())
                 val memoryProperty = Property(name = "MEMORY", it.macbookFullModel.memory.toString())
                 val cpuProperty = Property("CHIP", it.macbookFullModel.model.appleChip.toString())
@@ -224,7 +227,7 @@ fun buildResponse(
                 val colorProperty = Property("COLOR", it.macbookFullModel.color.toString())
                 val countryProperty = Property("COUNTRY", it.country.nameRu)
                 val stuffSearchResponse = StuffSearchResponse(
-                    modelId = "${it.id}/${it.country.name}",
+                    modelId = modelId,
                     stuffType = StuffType.MACBOOK,
                     title = it.macbookFullModel.model.toHumanReadableString(),
                     properties = listOf(
@@ -237,9 +240,9 @@ fun buildResponse(
                     ),
                     supplierPrices = arrayListOf(price)
                 )
-                visited[it.id] = stuffSearchResponse
+                visited[modelId] = stuffSearchResponse
             } else {
-                visited[it.id]!!.supplierPrices.add(price)
+                visited[modelId]!!.supplierPrices.add(price)
             }
         }
         stuffSearchResponses.addAll(visited.values)
