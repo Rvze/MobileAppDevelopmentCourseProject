@@ -117,12 +117,12 @@ func (s *service) buildUpdateMessage(ev entity.StuffUpdateEvent) string {
 
 func (s *service) buildCreateMessage(ev entity.StuffUpdateEvent) string {
 	text := "Поставщик добавил новый товар!\n"
-	text += fmt.Sprintf("%s\n", ev.ModelId)
+	text += fmt.Sprintf("%s", ev.ModelId)
 	return text
 }
 
 func (s *service) buildDeleteMessage(ev entity.StuffUpdateEvent) string {
 	text := "Поставщик удалил свой товар!\n"
-	text += fmt.Sprintf("%s\n", ev.ModelId)
+	text += fmt.Sprintf("%s", ev.ModelId)
 	return text
 }
