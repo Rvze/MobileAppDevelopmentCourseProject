@@ -1,7 +1,9 @@
 package com.tsypk.corestuff.controller
 
+import com.tsypk.corestuff.controller.dto.notification.NotificationActionType
 import com.tsypk.corestuff.controller.dto.notification.NotificationDto
 import com.tsypk.corestuff.controller.dto.notification.NotificationStuffRequest
+import com.tsypk.corestuff.controller.dto.notification.NotificationSubscriptionDto
 import com.tsypk.corestuff.model.notification.NotificationSubscription
 import com.tsypk.corestuff.model.notification.NotificationType
 import com.tsypk.corestuff.model.notification.toDto
@@ -29,6 +31,14 @@ class NotificationController(
         return ResponseEntity.ok(found.map { it.toDto() })
     }
 
+    @GetMapping(value = ["/subscription/list"])
+    fun getNotificationSubscriptions(
+        @RequestHeader("UserID") userId: Long,
+    ): ResponseEntity<List<NotificationSubscriptionDto>> {
+        val found = subscriptionRepository.getAllForUser(userId)
+        return ResponseEntity.ok(found.map { it.toDto() })
+    }
+
     @PostMapping(
         value = ["/stuff"],
         consumes = ["application/json"],
@@ -38,13 +48,22 @@ class NotificationController(
         @RequestHeader("UserID") userId: Long,
         @RequestBody request: NotificationStuffRequest
     ): ResponseEntity<Unit> {
-        subscriptionRepository.create(
-            notificationSubscription = NotificationSubscription(
+        if (request.actionType == NotificationActionType.SUBSCRIBE) {
+            subscriptionRepository.create(
+                notificationSubscription = NotificationSubscription(
+                    userId = userId,
+                    entityId = request.modelId,
+                    type = NotificationType.STUFF_SUBSCRIPTION,
+                )
+            )
+        } else {
+            subscriptionRepository.delete(
                 userId = userId,
                 entityId = request.modelId,
                 type = NotificationType.STUFF_SUBSCRIPTION,
             )
-        )
+        }
+
         return ResponseEntity.ok(Unit)
     }
 }

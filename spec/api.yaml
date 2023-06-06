@@ -103,6 +103,23 @@ paths:
               schema:
                 '$ref': '#/components/schemas/NotificationsResponse'
 
+  /v1/notification/subscription/list:
+    get:
+      description: |
+        Request to get user notification subscriptions
+      tags:
+        - Notification
+      parameters:
+        - $ref: '#/components/parameters/UserIdHeader'
+      responses:
+        '200':
+          description: |
+            Request processed successfully, body contains notifications
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/NotificationSubscriptionsResponse'
+
   /v1/notification/stuff:
     post:
       description: |
@@ -389,6 +406,19 @@ components:
       required:
         - action_type
         - model_id
+
+    NotificationSubscriptionsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          model_id:
+            $ref: '#/components/schemas/ModelId'
+          type:
+            type: string
+        required:
+          - model_id
+          - type
 
     NotificationsResponse:
       type: array

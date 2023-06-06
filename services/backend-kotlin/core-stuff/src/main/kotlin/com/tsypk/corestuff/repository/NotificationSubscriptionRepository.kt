@@ -11,6 +11,17 @@ class NotificationSubscriptionRepository(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
 ) {
 
+    fun getAllForUser(userId: Long): List<NotificationSubscription> {
+        return jdbcTemplate.query(
+            """
+                SELECT * FROM notification_subscription
+                    WHERE user_id = :user_id;
+            """.trimIndent(),
+            mapOf("user_id" to userId),
+            ROW_MAPPER
+        )
+    }
+
     fun create(notificationSubscription: NotificationSubscription) {
         jdbcTemplate.update(
             """
