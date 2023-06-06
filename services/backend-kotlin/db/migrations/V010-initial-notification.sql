@@ -11,7 +11,7 @@ create table notification
 (
     id              bigserial primary key,
     user_id         bigint       not null,
-    subscription_id bigint references notification_subscription (id),
+    subscription_id bigint references notification_subscription (id) ON DELETE CASCADE,
     text            text         not null,
     status          varchar(255) not null,
     read_at         timestamptz,
