@@ -18,7 +18,10 @@ import com.tsypk.corestuff.model.apple.SupplierAirPods
 import com.tsypk.corestuff.model.apple.SupplierIphone
 import com.tsypk.corestuff.model.apple.SupplierMacbook
 import com.tsypk.corestuff.model.stuff.UsersStuff
-import recognitioncommons.exception.*
+import recognitioncommons.exception.InvalidAirPodsIdException
+import recognitioncommons.exception.InvalidIphoneIdException
+import recognitioncommons.exception.InvalidMacbookIdException
+import recognitioncommons.exception.NotMacbookException
 import recognitioncommons.models.Money
 import recognitioncommons.models.apple.airpods.AirPods
 import recognitioncommons.models.apple.airpods.AirPodsFullModel
@@ -160,7 +163,6 @@ fun BuyStuffRequest.toUsersStuff(userId: Long): UsersStuff =
         count = this.count
     )
 
-
 fun buildResponse(
     supplierAirPods: List<SupplierAirPods>?,
     supplierIphones: List<SupplierIphone>?,
@@ -176,7 +178,9 @@ fun buildResponse(
                     modelId = "${it.id}/${it.country.name}",
                     stuffType = StuffType.AIRPODS,
                     title = it.airPodsFullModel.model.toHumanReadableString(),
-                    properties = listOf(),
+                    properties = listOf(
+                        Property("COUNTRY", it.country.nameRu),
+                    ),
                     supplierPrices = arrayListOf(price)
                 )
                 visited[it.id] = stuffSearchResponse
@@ -193,11 +197,12 @@ fun buildResponse(
             if (!visited.containsKey(it.id)) {
                 val memoryProperty = Property("MEMORY", it.iphoneFullModel.memory.toString())
                 val colorProperty = Property("COLOR", it.iphoneFullModel.color.toString())
+                val countryProperty = Property("COUNTRY", it.country.nameRu)
                 val stuffSearchResponse = StuffSearchResponse(
                     modelId = "${it.id}/${it.country.name}",
                     stuffType = StuffType.IPHONE,
                     title = it.iphoneFullModel.model.toHumanReadableString(),
-                    properties = listOf(memoryProperty, colorProperty),
+                    properties = listOf(memoryProperty, colorProperty, countryProperty),
                     supplierPrices = arrayListOf(price)
                 )
                 visited[it.id] = stuffSearchResponse
@@ -217,11 +222,19 @@ fun buildResponse(
                 val cpuProperty = Property("CHIP", it.macbookFullModel.model.appleChip.toString())
                 val ramProperty = Property("RAM", it.macbookFullModel.ram.toString())
                 val colorProperty = Property("COLOR", it.macbookFullModel.color.toString())
+                val countryProperty = Property("COUNTRY", it.country.nameRu)
                 val stuffSearchResponse = StuffSearchResponse(
                     modelId = "${it.id}/${it.country.name}",
                     stuffType = StuffType.MACBOOK,
                     title = it.macbookFullModel.model.toHumanReadableString(),
-                    properties = listOf(screenPropery, memoryProperty, cpuProperty, ramProperty, colorProperty),
+                    properties = listOf(
+                        screenPropery,
+                        memoryProperty,
+                        cpuProperty,
+                        ramProperty,
+                        colorProperty,
+                        countryProperty
+                    ),
                     supplierPrices = arrayListOf(price)
                 )
                 visited[it.id] = stuffSearchResponse

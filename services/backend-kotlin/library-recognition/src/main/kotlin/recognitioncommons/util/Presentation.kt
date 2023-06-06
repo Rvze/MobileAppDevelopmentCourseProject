@@ -94,7 +94,7 @@ object Presentation {
         )
 
         fun AirPodsModel?.toHumanReadableString(): String {
-            return airPodsModelToHumanReadableString[this]!!
+            return "${airPodsModelToHumanReadableString[this]!!}"
         }
     }
 }
